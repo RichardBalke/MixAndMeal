@@ -30,7 +30,7 @@ fun Application.configureDatabases() {
         }
 
         // Read user
-        get("/users/{id}") {
+        get("/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
             val user = userService.read(id)
             if (user != null) {
@@ -41,7 +41,7 @@ fun Application.configureDatabases() {
         }
 
         // Update user
-        put("/users/{id}") {
+        put("/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
             val user = call.receive<ExposedUser>()
             userService.update(id, user)
@@ -49,7 +49,7 @@ fun Application.configureDatabases() {
         }
 
         // Delete user
-        delete("/users/{id}") {
+        delete("/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
             userService.delete(id)
             call.respond(HttpStatusCode.OK)

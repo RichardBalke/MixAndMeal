@@ -12,10 +12,10 @@ data class User(
     val role: Role = Role.USER,
 //    val favourites: List<Recipes>,
 //    val fridge: List<Ingredients>,
-    val id: Long = NEW_USER_ID
+    val id: Int = NEW_USER_ID
 ) {
     companion object {
-        const val NEW_USER_ID: Long = 0
+        const val NEW_USER_ID: Int = 0
     }
 }
 

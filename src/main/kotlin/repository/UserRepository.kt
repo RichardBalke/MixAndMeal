@@ -5,19 +5,19 @@ import api.models.User
 import kotlinx.coroutines.runBlocking
 
 
-interface UserRepository : CrudRepository<User, Long> {
+interface UserRepository : CrudRepository<User, Int> {
     suspend fun findByUsername(username: String): User?
 }
 
 object FakeUserRepository : UserRepository {
-    private var currentID: Long = 0
+    private var currentID: Int = 0
     private val users = mutableListOf<User>()
 
     init {
         runBlocking {
             create(User("Bart", "koningRichard", "test1@test.nl", Role.USER))
             create(User("Fauve", "koningRichard", "test2@test.nl", Role.USER))
-            create(User("Richard", "koningRichard", "test3@test.nl", Role.ADMIN))
+            create(User("Richard", "koningRichard", "test3@test.nl", Role.USER))
             create(User("Yoran", "koningRichard", "test4@test.nl", Role.USER))
         }
     }
@@ -32,7 +32,7 @@ object FakeUserRepository : UserRepository {
 
 
     //Get functies
-    override suspend fun findById(id: Long): User? {
+    override suspend fun findById(id: Int): User? {
         var output : User? = null
         for (user in users) {
             if (user.id == id) {

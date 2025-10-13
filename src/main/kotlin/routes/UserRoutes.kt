@@ -15,26 +15,14 @@ fun Route.userRoutes(userRepository: UserRepository) {
         }
 
         get("/{id}") {
-            val id: Long = call.parameters["id"]?.toLongOrNull()
+            val id: Int = call.parameters["id"]?.toIntOrNull()
                 ?: return@get call.respond(HttpStatusCode.BadRequest)
 
             val user = userRepository.findById(id)
                 ?: return@get call.respond(HttpStatusCode.NotFound)
 
-            call.respond(status = HttpStatusCode.OK, message = user)
+            call.respond(HttpStatusCode.OK, user)
 
-
-//            val id = call.parameters["id"]?.toLongOrNull()
-//            if (id == null) {
-//                return@get call.respond(HttpStatusCode.BadRequest)
-//            }
-//
-//            val user = userRepository.findByID(id)
-//            if (user == null) {
-//                return@get call.respond(HttpStatusCode.NotFound)
-//            }
-//
-//            call.respond(status = HttpStatusCode.OK, message = user)
 
         }
     }

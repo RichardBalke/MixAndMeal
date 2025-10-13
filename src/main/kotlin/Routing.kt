@@ -18,7 +18,6 @@ import org.jetbrains.exposed.sql.*
 fun Application.configureRouting() {
     routing {
         userRoutes(FakeUserRepository)
-
         get("/") {
             call.respondText("Hello World!")
         }
