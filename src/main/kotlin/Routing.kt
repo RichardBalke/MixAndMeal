@@ -1,6 +1,8 @@
 package api
 
+import api.repository.FakeIngredientsRepository
 import api.repository.FakeUserRepository
+import api.routes.ingredientsRoutes
 import api.routes.userRoutes
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
@@ -18,6 +20,8 @@ import org.jetbrains.exposed.sql.*
 fun Application.configureRouting() {
     routing {
         userRoutes(FakeUserRepository)
+        ingredientsRoutes(FakeIngredientsRepository)
+
         get("/") {
             call.respondText("Hello World!")
         }

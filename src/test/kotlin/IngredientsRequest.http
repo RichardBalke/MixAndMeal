@@ -1,0 +1,57 @@
+### Get all ingredients
+GET http://localhost:8080/ingredients
+Accept: application/json
+
+###
+
+### Get ingredient by ID
+GET http://localhost:8080/ingredients/1
+Accept: application/json
+
+###
+
+### Get ingredient by name
+GET http://localhost:8080/ingredients/name/Apple
+Accept: application/json
+
+###
+
+### Create a new ingredient
+POST http://localhost:8080/ingredients
+Content-Type: application/json
+
+{
+  "name": "Banana",
+  "description": "A yellow fruit",
+  "allergens": []
+}
+
+###
+
+### Update an existing ingredient
+PUT http://localhost:8080/ingredients
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Sugar",
+  "description": "Refined sweetener",
+  "allergens": ["SULPHITES"]
+}
+
+###
+
+### Update allergens for an ingredient
+PATCH http://localhost:8080/ingredients/3/allergens
+Content-Type: application/json
+
+[
+  "PEANUTS",
+  "SOY"
+]
+
+###
+
+### Delete an ingredient
+DELETE http://localhost:8080/ingredients/4
+Accept: application/json

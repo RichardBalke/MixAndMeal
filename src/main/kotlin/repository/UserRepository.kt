@@ -33,14 +33,7 @@ object FakeUserRepository : UserRepository {
 
     //Get functies
     override suspend fun findById(id: Int): User? {
-        var output : User? = null
-        for (user in users) {
-            if (user.id == id) {
-                output = user
-            }
-        }
-        return output
-//        return users.find { it.id == id }
+        return users.find { it.id == id }
     }
 
     override suspend fun findByUsername(username: String): User? {
@@ -49,6 +42,14 @@ object FakeUserRepository : UserRepository {
 
     override suspend fun findAll(): List<User> {
         return users.toList()
+    }
+
+    override suspend fun delete(id: Long): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun update(entity: User) {
+        TODO("Not yet implemented")
     }
 }
 
