@@ -1,5 +1,7 @@
 package api
 
+import api.repository.FakeUserRepository
+import api.routes.userRoutes
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.http.*
@@ -15,6 +17,8 @@ import org.jetbrains.exposed.sql.*
 
 fun Application.configureRouting() {
     routing {
+        userRoutes(FakeUserRepository)
+
         get("/") {
             call.respondText("Hello World!")
         }

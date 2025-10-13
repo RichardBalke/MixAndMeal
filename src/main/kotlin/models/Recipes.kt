@@ -1,5 +1,8 @@
 package api.models
 
+import kotlinx.serialization.Serializable
+
+
 data class Recipes (
     val id: Long = NEW_RECIPE_ID,
     val title: String,
@@ -18,6 +21,8 @@ data class Recipes (
         const val NEW_RECIPE_ID: Long = 0
     }
 }
+
+
 
 enum class Diets(val id: Int, val displayName: String, val description: String) {
     MILK(1, "Melk", "Lactose intolerantie"),
