@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class Ingredients(
     val name: String,
     val description: String,
-    val allergens: List<Allergens>,
+    val allergens: List<Allergens> = listOf<Allergens>(),
 
     val id: Long = NEW_INGREDIENT_ID
 ) {

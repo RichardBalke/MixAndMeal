@@ -12,12 +12,11 @@ interface IngredientsRepository : CrudRepository<Ingredients, Long> {
 object FakeIngredientsRepository : IngredientsRepository {
     private var currentId : Long = 0
     private val ingredients : MutableList<Ingredients> = mutableListOf()
-    private val allergens = mutableListOf<Allergens>()
 
     init{
         runBlocking {
-            create(Ingredients("Apple", "A red apple", allergens))
-            create(Ingredients("Sugar", "A sweet substance", allergens))
+            create(Ingredients("Apple", "A red apple"))
+            create(Ingredients("Sugar", "A sweet substance"))
             create(Ingredients("Peanut", "A tasty nut", listOf(Allergens.PEANUTS)))
         }
     }

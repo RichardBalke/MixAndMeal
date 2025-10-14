@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Recipes (
-    val id: Long = NEW_RECIPE_ID,
     val title: String,
     val description: String,
     val prepTime: Int,
@@ -13,10 +12,11 @@ data class Recipes (
     val image: String,
     val mealType: MealType?,
     val kitchenStyle: KitchenStyle?,
-    val diets: List<Diets>,
-    val ingredients: List<MutableMap<Ingredients, Pair<UnitType, Double>>>
-    ) {
+    val diets: List<Diets> = listOf<Diets>(),
+    val ingredients: List<MutableMap<Ingredients, Pair<UnitType, Double>>>,
 
+    val id: Long = NEW_RECIPE_ID
+    ) {
     companion object {
         const val NEW_RECIPE_ID: Long = 0
     }

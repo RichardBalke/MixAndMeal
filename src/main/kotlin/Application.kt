@@ -9,6 +9,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureSerialization()
     configureSecurity()
-    configureDatabases()
+    // Database will be implemented in the new version.
+//    configureDatabases()
     configureRouting()
 }

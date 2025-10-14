@@ -12,7 +12,7 @@ data class ExposedUser(val name: String, val age: Int)
 
 class UserService(database: Database) {
     object Users : Table() {
-        val id = integer("id").autoIncrement()
+        val id = long("id").autoIncrement()
         val name = varchar("name", length = 50)
         val age = integer("age")
 
@@ -25,14 +25,14 @@ class UserService(database: Database) {
         }
     }
 
-    suspend fun create(user: ExposedUser): Int = dbQuery {
+    suspend fun create(user: ExposedUser): Long = dbQuery {
         Users.insert {
             it[name] = user.name
             it[age] = user.age
         }[Users.id]
     }
 
-    suspend fun read(id: Int): ExposedUser? {
+    suspend fun read(id: Long): ExposedUser? {
         return dbQuery {
             Users.selectAll()
                 .where { Users.id eq id }
@@ -41,7 +41,7 @@ class UserService(database: Database) {
         }
     }
 
-    suspend fun update(id: Int, user: ExposedUser) {
+    suspend fun update(id: Long, user: ExposedUser) {
         dbQuery {
             Users.update({ Users.id eq id }) {
                 it[name] = user.name
@@ -50,7 +50,7 @@ class UserService(database: Database) {
         }
     }
 
-    suspend fun delete(id: Int) {
+    suspend fun delete(id: Long) {
         dbQuery {
             Users.deleteWhere { Users.id.eq(id) }
         }

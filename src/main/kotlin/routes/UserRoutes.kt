@@ -15,7 +15,7 @@ fun Route.userRoutes(userRepository: UserRepository) {
         }
 
         get("/{id}") {
-            val id: Int = call.parameters["id"]?.toIntOrNull()
+            val id: Long = call.parameters["id"]?.toLongOrNull()
                 ?: return@get call.respond(HttpStatusCode.BadRequest)
 
             val user = userRepository.findById(id)
