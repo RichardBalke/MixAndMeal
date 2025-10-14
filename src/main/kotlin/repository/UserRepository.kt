@@ -15,10 +15,10 @@ object FakeUserRepository : UserRepository {
 
     init {
         runBlocking {
-            create(User("Bart", "koningRichard", "test1@test.nl", Role.USER))
-            create(User("Fauve", "koningRichard", "test2@test.nl", Role.USER))
-            create(User("Richard", "koningRichard", "test3@test.nl", Role.USER))
-            create(User("Yoran", "koningRichard", "test4@test.nl", Role.USER))
+            create(User("Bart", "Test1", "test1@test.nl", Role.USER))
+            create(User("Fauve", "Test2", "test2@test.nl", Role.USER))
+            create(User("Richard", "Test3", "test3@test.nl", Role.USER))
+            create(User("Yoran", "Test4", "test4@test.nl", Role.USER))
         }
     }
 
@@ -45,7 +45,7 @@ object FakeUserRepository : UserRepository {
     }
 
     override suspend fun delete(id: Long): Boolean {
-        TODO("Not yet implemented")
+        return users.removeIf { id == it.id}
     }
 
     override suspend fun update(entity: User) {

@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class MealType {
-    Breakfast,
-    Lunch,
-    Dinner,
-    Dessert
+    BREAKFAST,
+    LUNCH,
+    DINNER,
+    DESSERT
 }
