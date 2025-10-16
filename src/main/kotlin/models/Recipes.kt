@@ -14,7 +14,7 @@ data class Recipes (
     val mealType: MealType?,
     val kitchenStyle: KitchenStyle?,
     val diets: List<Diets>,
-    val ingredients: List<MutableMap<Ingredients, Pair<UnitType, Double>>>
+    val ingredients: List<IngredientUnits>
 //    val favourites: List<Recipes>
     ) {
 

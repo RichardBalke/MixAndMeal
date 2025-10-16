@@ -1,9 +1,11 @@
 package api
 
 import api.repository.FakeIngredientsRepository
+import api.repository.FakeRecipeRepository
 import api.repository.FakeUserRepository
 import api.routes.ingredientsRoutes
 import api.routes.userRoutes
+import api.routes.recipesRoutes
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.http.*
@@ -22,6 +24,8 @@ fun Application.configureRouting() {
     routing {
         userRoutes(FakeUserRepository)
         ingredientsRoutes(FakeIngredientsRepository)
+        recipesRoutes(FakeRecipeRepository)
+
         authRoutes("secret_key", "http://localhost:8080/","jwt-audience")
         get("/") {
             call.respondText("Hello World!")

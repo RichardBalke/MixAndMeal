@@ -2,11 +2,11 @@ package api.repository
 
 import api.models.Diets
 import api.models.Difficulty
+import api.models.IngredientUnits
 import api.models.Ingredients
 import api.models.KitchenStyle
 import api.models.MealType
 import api.models.Recipes
-import api.models.UnitType
 import kotlinx.coroutines.runBlocking
 
 interface RecipesRepository : CrudRepository<Recipes, Long> {
@@ -27,6 +27,9 @@ object FakeRecipeRepository : RecipesRepository {
 
     init {
         runBlocking {
+            val ingredient1 = FakeIngredientUnitRepository.create(1, 1.5, "KG")
+            val ingredient2 = FakeIngredientUnitRepository.create(2, 50.0, "GRAMS")
+
             create(
                 Recipes(
                     title = "Creamy Mushroom Risotto",
@@ -38,33 +41,15 @@ object FakeRecipeRepository : RecipesRepository {
                     mealType = MealType.DINNER,
                     kitchenStyle = KitchenStyle.ITALIAN,
                     diets = listOf(Diets.VEGETARIAN),
-                    ingredients = listOf(
-                        resolveIngredients(
-                            "Apple" to (UnitType.KG to 1.0),
-                            "Sugar" to (UnitType.GRAMS to 50.0),
-                            "Peanut" to (UnitType.GRAMS to 20.0)
-                        )
+                    ingredients = listOf<IngredientUnits>(
+                        ingredient1 as IngredientUnits,
+                        ingredient2 as IngredientUnits
                     )
                 )
             )
         }
     }
 
-
-
-
-    private suspend fun resolveIngredients(vararg entries: Pair<String, Pair<UnitType, Double>>): MutableMap<Ingredients, Pair<UnitType, Double>> {
-        val resolved = mutableMapOf<Ingredients, Pair<UnitType, Double>>()
-        for ((name, quantity) in entries) {
-            val ingredient = FakeIngredientsRepository.findByName(name)
-            if (ingredient != null) {
-                resolved[ingredient] = quantity
-            } else {
-                println("⚠️ Ingredient '$name' not found in repository.")
-            }
-        }
-        return resolved
-    }
 
     override suspend fun formatCookingTime(minutes: Int): String {
         val hours = minutes / 60
