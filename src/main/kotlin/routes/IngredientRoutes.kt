@@ -23,6 +23,7 @@ fun Route.ingredientsRoutes(repository: IngredientsRepository) {
             call.respond(repository.findAll())
         }
 
+
         // GET by ID
         get("/{id}") {
             val id = call.parameters["id"]?.toLongOrNull()

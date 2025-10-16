@@ -1,4 +1,14 @@
 ###
-GET http://127.0.0.1:8080/users/1
+GET http://127.0.0.1:8080/users
 
+###
+
+###
+POST http://127.0.0.1:8080/login
+Content-Type: application/json
+
+{
+  "email": "test1@test.nl",
+  "password": "Test1"
+}
 ###

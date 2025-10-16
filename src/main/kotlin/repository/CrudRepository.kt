@@ -5,7 +5,7 @@ interface CrudRepository <T,ID> {
     suspend fun create(entity: T): T
     suspend fun findAll(): List<T>
     suspend fun update(entity: T)
-    suspend fun delete(id: Long): Boolean
+    suspend fun delete(id: ID): Boolean
 
 }
 

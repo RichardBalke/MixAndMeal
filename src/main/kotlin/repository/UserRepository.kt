@@ -11,11 +11,11 @@ interface UserRepository : CrudRepository<User, Long> {
 
 object FakeUserRepository : UserRepository {
     private var currentID: Long = 0L
-    private val users = mutableListOf<User>()
+    public val users = mutableListOf<User>()
 
     init {
         runBlocking {
-            create(User("Bart", "Test1", "test1@test.nl", Role.USER))
+            create(User("Bart", "Test1", "test1@test.nl", Role.ADMIN))
             create(User("Fauve", "Test2", "test2@test.nl", Role.USER))
             create(User("Richard", "Test3", "test3@test.nl", Role.USER))
             create(User("Yoran", "Test4", "test4@test.nl", Role.USER))

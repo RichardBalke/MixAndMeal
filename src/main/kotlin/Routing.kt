@@ -16,12 +16,13 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.*
+import routes.authRoutes
 
 fun Application.configureRouting() {
     routing {
         userRoutes(FakeUserRepository)
         ingredientsRoutes(FakeIngredientsRepository)
-
+        authRoutes("secret_key", "http://localhost:8080/","jwt-audience")
         get("/") {
             call.respondText("Hello World!")
         }
