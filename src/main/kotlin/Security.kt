@@ -25,13 +25,18 @@ fun Application.configureSecurity() {
             verifier(
                 JWT
                     .require(Algorithm.HMAC256(jwtSecret))
-                    .withAudience(jwtAudience)
                     .withIssuer(jwtDomain)
                     .build()
             )
             validate { credential ->
-                if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
+                val userId = credential.payload.subject ?: return@validate null
+                UserIdPrincipal(userId)
+
             }
+            challenge { _, _ ->
+                call.respond(HttpStatusCode.Unauthorized)
+            }
+
         }
     }
 }
