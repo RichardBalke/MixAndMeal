@@ -2,31 +2,34 @@ package api
 
 import api.repository.FakeIngredientsRepository
 import api.repository.FakeRecipeRepository
-import api.repository.FakeUserRepository
 import api.routes.ingredientsRoutes
 import api.routes.userRoutes
 import api.routes.recipesRoutes
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
-import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.jetbrains.exposed.sql.*
-import routes.authRoutes
+import models.TokenConfig
+import routes.authenticated
+import routes.getSecretInfo
+import routes.signIn
+import routes.signUp
+import service.TokenService
+import service.UserService
 
-fun Application.configureRouting() {
+fun Application.configureRouting(
+    tempUser : UserService,
+    tokenService: TokenService,
+    tokenConfig: TokenConfig
+    ) {
     routing {
-        userRoutes(FakeUserRepository)
+        userRoutes(tempUser)
         ingredientsRoutes(FakeIngredientsRepository)
         recipesRoutes(FakeRecipeRepository)
 
-        authRoutes("secret_key", "http://localhost:8080/","jwt-audience")
+        signUp(tempUser)
+        signIn(tempUser, tokenService, tokenConfig)
+        authenticated()
+        getSecretInfo()
         get("/") {
             call.respondText("Hello World!")
         }

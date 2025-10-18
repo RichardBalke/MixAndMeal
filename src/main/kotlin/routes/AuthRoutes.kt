@@ -1,31 +1,102 @@
 package routes
 
-import api.repository.FakeUserRepository
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
+import api.models.User
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.request.receive
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
+import io.ktor.server.request.receiveNullable
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.get
 import io.ktor.server.routing.post
-import models.Login
+import models.TokenClaim
+import models.TokenConfig
+import requests.AuthRequest
+import responses.AuthResponse
+import service.TokenService
+import service.UserService
 
-fun Route.authRoutes(jwtSecret: String, jwtIssuer: String, jwtAudience: String) {
-    post("/login"){
-        val req = call.receive<Login>()
-        val user = FakeUserRepository.users.find {
-            it.email == req.email && it.password == req.password
+fun Route.signUp(
+    tempUser : UserService
+){
+    post("/signup"){
+        val request = call.receiveNullable<AuthRequest>() ?: kotlin.run{
+            call.respond(HttpStatusCode.BadRequest)
+            return@post
         }
-        if (user != null) {
-            val token = JWT.create()
-                .withAudience(jwtAudience)
-                .withIssuer(jwtIssuer)
-                .withClaim("username", user.email)
-                .withClaim("role", user.role.name)
-                .sign(Algorithm.HMAC256(jwtSecret))
-            call.respond(mapOf("token" to token))
-        } else {
-            call.respond(HttpStatusCode.Unauthorized, "Ongeldige gegevens")
+
+
+        val areFieldsBlank = request.username.isBlank() || request.password.isBlank()
+        val isPwTooShort = request.password.length < 2
+        if(areFieldsBlank || isPwTooShort){
+            call.respond(HttpStatusCode.ExpectationFailed)
+            return@post
+        }
+
+        val user = User(
+            name = request.username,
+            password = request.password,
+            email = request.email,
+        )
+        tempUser.create(user)
+
+        call.respond(HttpStatusCode.OK)
+
+    }
+}
+
+fun Route.signIn(
+    tempUser : UserService,
+    tokenService: TokenService,
+    tokenConfig : TokenConfig
+){
+    post("/signin"){
+        val request = call.receiveNullable<AuthRequest>() ?: kotlin.run{
+            call.respond(HttpStatusCode.BadRequest)
+            return@post
+        }
+
+        val user = tempUser.findByUsername(request.username)
+        if(user == null){
+            call.respond(HttpStatusCode.Unauthorized)
+            return@post
+        }
+
+        val isValidPassword = request.password == user.password
+
+        if(!isValidPassword){
+            call.respond(HttpStatusCode.Unauthorized, "Incorrect username or password")
+            return@post
+        }
+
+        val token = tokenService.generate(
+            config = tokenConfig,
+            TokenClaim(
+                name = "userId",
+                value = user.id.toString()
+            )
+        )
+        call.respond(status = HttpStatusCode.OK,
+            message = AuthResponse(token = token))
+    }
+}
+
+
+fun Route.authenticated() {
+    authenticate {
+        get("/authenticate"){
+            call.respond(HttpStatusCode.OK)
+        }
+    }
+}
+
+fun Route.getSecretInfo(){
+    authenticate {
+        get("/secret"){
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.getClaim("userId", String::class)
+            call.respond(HttpStatusCode.OK, "Your userId is $userId")
         }
     }
 }

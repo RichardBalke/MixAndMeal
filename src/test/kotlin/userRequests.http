@@ -4,11 +4,37 @@ GET http://127.0.0.1:8080/users
 ###
 
 ###
-POST http://127.0.0.1:8080/login
+POST http://127.0.0.1:8080/signin
 Content-Type: application/json
 
 {
-  "email": "test1@test.nl",
-  "password": "Test1"
+  "username": "Fauve",
+  "email": "test2@test.nl",
+  "password": "Test2"
 }
+###
+
+###
+POST http://127.0.0.1:8080/signup
+Content-Type: application/json
+
+{
+  "username": "Bart",
+  "password": "Test1",
+  "email": "test1@test.nl"
+
+}
+###
+
+###
+GET http://127.0.0.1:8080/authenticate
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYwODcxOTc5LCJ1c2VySWQiOiIxIn0.jjocPQZgRAxrYu6GiE_0VNtLFk92E5vYsaoo2kh_uMI
+
+###
+
+###
+GET http://127.0.0.1:8080/secret
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYwODcyMDc2LCJ1c2VySWQiOiIyIn0.JzUY8jeXOpHdme9P1nH_o9sxLUUyISUX5BabLSxaoEE
 ###
