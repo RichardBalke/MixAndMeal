@@ -1,6 +1,5 @@
 package api
 
-import api.repository.FakeUserRepository
 import io.ktor.server.application.*
 import models.TokenConfig
 import service.JwtService

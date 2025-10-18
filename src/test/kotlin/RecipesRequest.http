@@ -16,13 +16,13 @@ Content-Type: application/json
 GET http://localhost:8080/recipes
 
 ### Find recipe by title
-GET http://localhost:8080/recipes/search?title=Spicy
+GET http://localhost:8080/recipes/title/risotto
 
 ### Find recipes by difficulty
-GET http://localhost:8080/recipes/search?difficulty=EASY
+GET http://localhost:8080/recipes/difficulty=MEDIUM
 
 ### Find recipes by meal type
-GET http://localhost:8080/recipes/search?mealType=DINNER
+GET http://localhost:8080/recipes/mealType/dinner
 
 ### Find recipes by diet
 GET http://localhost:8080/recipes/search?diets=VEGAN

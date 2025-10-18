@@ -2,9 +2,6 @@ package api.routes
 
 import api.models.Diets
 import api.models.Difficulty
-import api.models.KitchenStyle
-import api.models.MealType
-import api.models.Recipes
 import api.repository.RecipesRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
@@ -23,8 +20,8 @@ fun Route.recipesRoutes(repository: RecipesRepository) {
 
         //Get recipes by title
         get("/title/{title}") {
-            val name = call.parameters["title"]
-            val title = name?.let { repository.findByTitle(it) }
+            val name = call.parameters["title"].toString()
+            val title = repository.findByTitle(name)
             if (title == null) {
                 call.respond(HttpStatusCode.NotFound, "Recipe not found.")
             } else {
@@ -53,21 +50,19 @@ fun Route.recipesRoutes(repository: RecipesRepository) {
 
         //Get by mealtype
         get("/mealtype/{mealtype}") {
-            val type = call.parameters["mealtype"]
+            val type = call.parameters["mealtype"]?.lowercase()
 
-            val mealType = try {
-                type?.let { MealType.valueOf(it.uppercase()) }
-            } catch (e: IllegalArgumentException) {
-                null
+            if (type == null) {
+                call.respond(HttpStatusCode.BadRequest)
             }
 
-            if (mealType == null) {
-                call.respond(HttpStatusCode.BadRequest, "Invalid difficulty level.")
-                return@get
-            }
+            val recipes = repository.findByMealType(type)
 
-            val mealTypes = repository.findByMealType(mealType)
-            call.respond(mealTypes)
+            if (recipes.isEmpty()) {
+                call.respond(HttpStatusCode.NotFound, "No recipes found for meal type $type.")
+            } else {
+                call.respond(recipes)
+            }
         }
 
         //Get by diets
@@ -91,7 +86,7 @@ fun Route.recipesRoutes(repository: RecipesRepository) {
             call.respond(recipesByDiet)
         }
 
-            //Get by kitchenstyle
+        //Get by kitchenstyle
 //        get("/{kitchen}") {
 //
 //        }
@@ -100,4 +95,3 @@ fun Route.recipesRoutes(repository: RecipesRepository) {
     }
 
 }
-

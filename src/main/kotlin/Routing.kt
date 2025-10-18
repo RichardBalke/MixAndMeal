@@ -1,7 +1,6 @@
 package api
 
 import api.repository.FakeIngredientsRepository
-import api.repository.FakeRecipeRepository
 import api.routes.ingredientsRoutes
 import api.routes.userRoutes
 import api.routes.recipesRoutes
@@ -13,6 +12,7 @@ import routes.authenticated
 import routes.getSecretInfo
 import routes.signIn
 import routes.signUp
+import service.RecipeService
 import service.TokenService
 import service.UserService
 
@@ -24,7 +24,7 @@ fun Application.configureRouting(
     routing {
         userRoutes(tempUser)
         ingredientsRoutes(FakeIngredientsRepository)
-        recipesRoutes(FakeRecipeRepository)
+        recipesRoutes(RecipeService())
 
         signUp(tempUser)
         signIn(tempUser, tokenService, tokenConfig)

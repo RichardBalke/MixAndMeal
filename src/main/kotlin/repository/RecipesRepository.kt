@@ -3,16 +3,16 @@ package api.repository
 import api.models.Diets
 import api.models.Difficulty
 import api.models.IngredientUnits
-import api.models.Ingredients
 import api.models.KitchenStyle
 import api.models.MealType
 import api.models.Recipes
 import kotlinx.coroutines.runBlocking
+import service.RecipeService
 
 interface RecipesRepository : CrudRepository<Recipes, Long> {
     suspend fun findByTitle(title: String): List<Recipes>
     suspend fun findByDifficulty(difficulty: Difficulty): List<Recipes>
-    suspend fun findByMealType(mealType: MealType): List<Recipes>
+    suspend fun findByMealType(mealType: String?): List<Recipes>
     suspend fun findByDiets(diets: Diets): List<Recipes>
     suspend fun findByKitchenStyle(kitchenStyle: KitchenStyle): List<Recipes>
     suspend fun formatCookingTime(minutes: Int): String
@@ -21,16 +21,17 @@ interface RecipesRepository : CrudRepository<Recipes, Long> {
 //    suspend fun findByFavourites(favourites : Favourites): List<Recipes>
 }
 
-object FakeRecipeRepository : RecipesRepository {
-    private var currentID: Long = 0
-    private val recipes = mutableListOf<Recipes>()
+object FakeRecipeRepository {
+    var currentID: Long = 0
+    val recipes = mutableListOf<Recipes>()
+    val recipeService = RecipeService()
 
     init {
         runBlocking {
             val ingredient1 = FakeIngredientUnitRepository.create(1, 1.5, "KG")
             val ingredient2 = FakeIngredientUnitRepository.create(2, 50.0, "GRAMS")
 
-            create(
+           recipeService.create(
                 Recipes(
                     title = "Creamy Mushroom Risotto",
                     description = "A rich and creamy risotto with earthy mushrooms and parmesan.",
@@ -50,83 +51,4 @@ object FakeRecipeRepository : RecipesRepository {
         }
     }
 
-
-    override suspend fun formatCookingTime(minutes: Int): String {
-        val hours = minutes / 60
-        val minutes = minutes % 60
-        return "${hours}h ${minutes}m"
-    }
-
-    override suspend fun create(entity: Recipes): Recipes {
-        currentID++
-        val newRecipe = entity.copy(id = currentID)
-        recipes.add(newRecipe)
-        return newRecipe
-    }
-
-    override suspend fun findByTitle(title: String): List<Recipes> {
-        val recipeTitles = mutableListOf<Recipes>()
-        for (recipe in recipes) {
-            if (recipe.title.contains("$title")) {
-                recipeTitles.add(recipe)
-            }
-        }
-        return recipeTitles
-    }
-
-    override suspend fun findByDifficulty(difficulty: Difficulty): List<Recipes> {
-        val foundRecipes = mutableListOf<Recipes>()
-        for (recipe in recipes) {
-            if (recipe.difficulty == difficulty) {
-                foundRecipes.add(recipe)
-            }
-        }
-        return foundRecipes
-    }
-
-    override suspend fun findByDiets(diets: Diets): List<Recipes> {
-        val foundRecipes = mutableListOf<Recipes>()
-        for (recipe in recipes) {
-            if (diets in recipe.diets) {
-                foundRecipes.add(recipe)
-            }
-        }
-        return foundRecipes
-    }
-
-    override suspend fun findByKitchenStyle(kitchenStyle: KitchenStyle): List<Recipes> {
-        val foundRecipes = mutableListOf<Recipes>()
-        for (recipe in recipes) {
-            if (recipe.kitchenStyle == kitchenStyle) {
-                foundRecipes.add(recipe)
-            }
-        }
-        return foundRecipes
-    }
-
-    override suspend fun findByMealType(mealType: MealType): List<Recipes> {
-        val foundRecipes = mutableListOf<Recipes>()
-        for (recipe in recipes) {
-            if (recipe.mealType == mealType) {
-                foundRecipes.add(recipe)
-            }
-        }
-        return foundRecipes
-    }
-
-    override suspend fun findAll(): List<Recipes> {
-        return recipes.toList()
-    }
-
-    override suspend fun findById(id: Long): Recipes? {
-        return recipes.find { it.id == id }
-    }
-
-    override suspend fun delete(id: Long): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun update(entity: Recipes) {
-        TODO("Not yet implemented")
-    }
 }
