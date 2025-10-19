@@ -6,6 +6,7 @@ import api.repository.RecipesRepository
 import api.repository.FakeRecipeRepository.currentID
 import api.repository.FakeRecipeRepository.recipes
 import api.models.Recipes
+import api.repository.FakeUserRepository.users
 
 
 class RecipeService : RecipesRepository {
@@ -88,10 +89,14 @@ class RecipeService : RecipesRepository {
     }
 
     override suspend fun delete(id: Long): Boolean {
-        TODO("Not yet implemented")
+        return recipes.removeIf { id == it.id}
     }
 
     override suspend fun update(entity: Recipes) {
         TODO("Not yet implemented")
     }
+}
+
+suspend fun test() {
+    TODO()
 }

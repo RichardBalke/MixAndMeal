@@ -18,6 +18,9 @@ object FakeIngredientsRepository : IngredientsRepository {
             create(Ingredients("Apple", "A red apple"))
             create(Ingredients("Sugar", "A sweet substance"))
             create(Ingredients("Peanut", "A tasty nut", listOf(Allergens.PEANUTS)))
+            create(Ingredients("Lentils", "Hearty and protein-rich lentils"))
+            create(Ingredients("Tomatoes", "Fresh ripe tomatoes"))
+            create(Ingredients("Spices", "A mix of Indian spices"))
         }
     }
 
