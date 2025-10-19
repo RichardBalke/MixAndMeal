@@ -16,7 +16,7 @@ data class Recipes (
     val diets: List<Diets>,
     val ingredients: List<IngredientUnits>
 //    val favourites: List<Recipes>
-    ) {
+) {
 
     companion object {
         const val NEW_RECIPE_ID: Long = 0

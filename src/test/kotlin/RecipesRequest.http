@@ -4,12 +4,49 @@ Content-Type: application/json
 
 {
   "title": "Spicy Lentil Soup",
+  "description": "A hearty and spicy lentil soup perfect for dinner.",
+  "prepTime": 10,
+  "cookingTime": 30,
   "difficulty": "EASY",
+  "image": "spicy_lentil_soup.jpg",
   "mealType": "DINNER",
-  "diets": ["VEGAN", "GLUTEN_FREE"],
   "kitchenStyle": "INDIAN",
-  "ingredients": ["Lentils", "Tomatoes", "Spices"],
-  "instructions": "Simmer lentils with spices for 30 minutes."
+  "diets": [
+    "VEGAN"
+  ],
+  "ingredients": [
+    {
+      "ingredient": {
+        "name": "Lentils",
+        "description": "Hearty and protein-rich lentils",
+        "allergens": [],
+        "id": 4
+      },
+      "amount": 0.2,
+      "unitType": "KG"
+    },
+    {
+      "ingredient": {
+        "name": "Tomatoes",
+        "description": "Fresh ripe tomatoes",
+        "allergens": [],
+        "id": 5
+      },
+      "amount": 3.0,
+      "unitType": "GRAMS"
+    },
+
+    {
+      "ingredient": {
+        "name": "Spices",
+        "description": "A mix of Indian spices",
+        "allergens": [],
+        "id": 6
+      },
+      "amount": 2.0,
+      "unitType": "GRAMS"
+    }
+  ]
 }
 
 ### Get all recipes
