@@ -1,7 +1,6 @@
 package service
 
 import api.models.Diets
-import api.models.Difficulty
 import api.models.KitchenStyle
 import api.repository.RecipesRepository
 import api.repository.FakeRecipeRepository.currentID
@@ -49,36 +48,39 @@ class RecipeService : RecipesRepository {
         return foundRecipes
     }
 
-    override suspend fun findByDifficulty(difficulty: Difficulty): List<Recipes> {
+    override suspend fun findByDifficulty(difficulty: String?): List<Recipes> {
         val foundRecipes = mutableListOf<Recipes>()
         for (recipe in recipes) {
-            if (recipe.difficulty == difficulty) {
+            if (recipe.difficulty.name.lowercase() == difficulty) {
                 foundRecipes.add(recipe)
             }
         }
         return foundRecipes
     }
 
-    override suspend fun findByDiets(diets: Diets): List<Recipes> {
+    override suspend fun findByDiets(diets: String?): List<Recipes> {
+
         val foundRecipes = mutableListOf<Recipes>()
         for (recipe in recipes) {
-            if (diets in recipe.diets) {
+            val matchedDiets = recipe.diets.any { it.displayName.lowercase() == diets?.lowercase() }
+            if (matchedDiets) {
+                foundRecipes.add(recipe)
+            }
+        }
+        return foundRecipes
+
+    }
+
+
+    override suspend fun findByKitchenStyle(kitchenStyle: String?): List<Recipes> {
+        val foundRecipes = mutableListOf<Recipes>()
+        for (recipe in recipes) {
+            if (recipe.kitchenStyle?.name?.lowercase() == kitchenStyle) {
                 foundRecipes.add(recipe)
             }
         }
         return foundRecipes
     }
-
-    override suspend fun findByKitchenStyle(kitchenStyle: KitchenStyle): List<Recipes> {
-        val foundRecipes = mutableListOf<Recipes>()
-        for (recipe in recipes) {
-            if (recipe.kitchenStyle == kitchenStyle) {
-                foundRecipes.add(recipe)
-            }
-        }
-        return foundRecipes
-    }
-
 
 
     override suspend fun findById(id: Long): Recipes? {

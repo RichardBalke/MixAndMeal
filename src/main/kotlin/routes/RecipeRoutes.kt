@@ -1,13 +1,16 @@
 package api.routes
 
 import api.models.Diets
-import api.models.Difficulty
+import api.repository.FakeRecipeRepository
 import api.repository.RecipesRepository
+import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.http.httpDateFormat
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
+import service.RecipeService
 
 fun Route.recipesRoutes(repository: RecipesRepository) {
 
@@ -29,25 +32,6 @@ fun Route.recipesRoutes(repository: RecipesRepository) {
             }
         }
 
-        //Get by difficulty
-        get("/difficulty/{difficulty}") {
-            val diff = call.parameters["difficulty"]
-
-            val difficulty = try {
-                diff?.let { Difficulty.valueOf(it.uppercase()) }
-            } catch (e: IllegalArgumentException) {
-                null
-            }
-
-            if (difficulty == null) {
-                call.respond(HttpStatusCode.BadRequest, "Invalid difficulty level.")
-                return@get
-            }
-
-            val diffRecipes = repository.findByDifficulty(difficulty)
-            call.respond(diffRecipes)
-        }
-
         //Get by mealtype
         get("/mealtype/{mealtype}") {
             val type = call.parameters["mealtype"]?.lowercase()
@@ -65,31 +49,75 @@ fun Route.recipesRoutes(repository: RecipesRepository) {
             }
         }
 
-        //Get by diets
-        get("/diet/{diet}") {
-            fun String?.toDietOrNull(): Diets? {
-                if (this == null) {
-                    return null
-                }
+        //Get by difficulty
+        get("/difficulty/{difficulty}") {
+            val diff = call.parameters["difficulty"]?.lowercase()
 
-                val readableDietText = this.uppercase().replace(" ", "_")
-                return Diets.entries.firstOrNull { it.name == readableDietText }
+            if (diff == null) {
+                call.respond(HttpStatusCode.BadRequest)
             }
 
-            val getDietType = call.parameters["mealtype"]
-            val diet = getDietType.toDietOrNull()
-            if (diet == null) {
-                call.respond(HttpStatusCode.BadRequest, "Invalid diet.")
-                return@get
+            val difficulty = repository.findByDifficulty(diff)
+
+            if (difficulty.isEmpty()) {
+                call.respond(HttpStatusCode.BadRequest, "Invalid difficulty level '$difficulty'.")
+            } else {
+                call.respond(difficulty)
             }
-            val recipesByDiet = repository.findByDiets(diet)
-            call.respond(recipesByDiet)
         }
 
-        //Get by kitchenstyle
-//        get("/{kitchen}") {
-//
-//        }
+        //Get by diets
+        get("/diets/{diet}") {
+            fun String?.isValidDietDisplayName(): Boolean {
+                if (this == null) return false
+                return Diets.entries.any { it.displayName.lowercase() == this.lowercase() }
+            }
+
+            val diets = call.parameters["diet"]?.lowercase()
+
+            if (diets == null || !diets.isValidDietDisplayName()) {
+                call.respond(HttpStatusCode.BadRequest, "Invalid diet choice '$diets")
+                return@get
+            }
+
+            val dietsChoice = repository.findByDiets(diets)
+
+            if (dietsChoice.isEmpty()) {
+                call.respond(HttpStatusCode.BadRequest, "Invalid diet choice '$diets'")
+            } else {
+                call.respond(dietsChoice)
+            }
+        }
+
+//        Get by kitchen style
+        get("/kitchen/{style}") {
+            val style = call.parameters["style"]?.lowercase()
+
+            if (style == null) {
+                call.respond(HttpStatusCode.BadRequest, "Missing kitchen style.")
+                return@get
+            }
+
+            val recipes = repository.findByKitchenStyle(style)
+
+            if (recipes.isEmpty()) {
+                call.respond(HttpStatusCode.NotFound, "No recipes found for kitchen style '$style'.")
+            } else {
+                call.respond(recipes)
+            }
+
+            get("/recipes/{id}") {
+                // controleert of de parameter {id} in de url naar een Long type geconvert kan worden.
+                val id: Long = call.parameters["id"]?.toLongOrNull()
+                    ?: return@get call.respond(HttpStatusCode.BadRequest)
+
+                // controleert of de user met 'id' bestaat
+                val recipe = FakeRecipeRepository.recipeService.findById(id)
+                    ?: return@get call.respond(HttpStatusCode.NotFound)
+
+                call.respond(HttpStatusCode.OK, recipe)
+            }
+        }
 
 
     }

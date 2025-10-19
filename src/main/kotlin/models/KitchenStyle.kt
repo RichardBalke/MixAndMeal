@@ -3,21 +3,21 @@ package api.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class KitchenStyle {
-    ASIAN,
-    EAST_EUROPEAN,
-    MEXICAN,
-    DUTCH,
-    TURKISH,
-    GREEK,
-    MEDITERRANEAN,
-    JAPANESE,
-    INDIAN,
-    CHINESE,
-    ITALIAN,
-    FRENCH,
-    THAI,
-    SPANISH,
-    KOREAN,
-    VIETNAMESE
+enum class KitchenStyle(kitchenName: String?) {
+    ASIAN("asian"),
+    EAST_EUROPEAN("easteuropean"),
+    MEXICAN("mexican"),
+    DUTCH("dutch"),
+    TURKISH("turkish"),
+    GREEK("greek"),
+    MEDITERRANEAN("mediterranean"),
+    JAPANESE("japanese"),
+    INDIAN("indian"),
+    CHINESE("chinese"),
+    ITALIAN("italian"),
+    FRENCH("french"),
+    THAI("thai"),
+    SPANISH("spanish"),
+    KOREAN("korean"),
+    VIETNAMESE("vietnamese")
 }

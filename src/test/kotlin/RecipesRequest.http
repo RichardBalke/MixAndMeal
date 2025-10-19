@@ -19,16 +19,16 @@ GET http://localhost:8080/recipes
 GET http://localhost:8080/recipes/title/risotto
 
 ### Find recipes by difficulty
-GET http://localhost:8080/recipes/difficulty=MEDIUM
+GET http://localhost:8080/recipes/difficulty/medium
 
 ### Find recipes by meal type
-GET http://localhost:8080/recipes/mealType/dinner
+GET http://localhost:8080/recipes/mealtype/dinner
 
 ### Find recipes by diet
-GET http://localhost:8080/recipes/search?diets=VEGAN
+GET http://localhost:8080/recipes/diets/veganistisch
 
 ### Find recipes by kitchen style
-GET http://localhost:8080/recipes/search?kitchenStyle=INDIAN
+GET http://localhost:8080/recipes/kitchen/italian
 
 ### Get recipe by ID
 GET http://localhost:8080/recipes/1
