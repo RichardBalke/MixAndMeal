@@ -8,6 +8,7 @@ import api.models.MealType
 import api.models.Recipes
 import kotlinx.coroutines.runBlocking
 import service.RecipeService
+import api.repository.FakeIngredientUnitRepository.list
 
 interface RecipesRepository : CrudRepository<Recipes, Long> {
     suspend fun findByTitle(title: String): List<Recipes>
@@ -28,8 +29,6 @@ object FakeRecipeRepository {
 
     init {
         runBlocking {
-            val ingredient1 = FakeIngredientUnitRepository.create(1, 1.5, "KG")
-            val ingredient2 = FakeIngredientUnitRepository.create(2, 50.0, "GRAMS")
 
            recipeService.create(
                 Recipes(
@@ -43,8 +42,8 @@ object FakeRecipeRepository {
                     kitchenStyle = KitchenStyle.ITALIAN,
                     diets = listOf(Diets.VEGAN),
                     ingredients = listOf<IngredientUnits>(
-                        ingredient1 as IngredientUnits,
-                        ingredient2 as IngredientUnits
+                        list[1],
+                        list[2]
                     )
                 )
             )
@@ -61,8 +60,8 @@ object FakeRecipeRepository {
                     kitchenStyle = KitchenStyle.ITALIAN,
                     diets = listOf(Diets.VEGAN),
                     ingredients = listOf<IngredientUnits>(
-                        ingredient1 as IngredientUnits,
-                        ingredient2 as IngredientUnits
+                        list[1],
+                        list[2]
                     )
                 )
             )
@@ -79,8 +78,8 @@ object FakeRecipeRepository {
                     kitchenStyle = KitchenStyle.ITALIAN,
                     diets = listOf(Diets.VEGAN),
                     ingredients = listOf<IngredientUnits>(
-                        ingredient1 as IngredientUnits,
-                        ingredient2 as IngredientUnits
+                        list[1],
+                        list[2]
                     )
                 )
             )
