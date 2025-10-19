@@ -8,6 +8,7 @@ import service.UserService
 
 interface UserRepository : CrudRepository<User, Long> {
     suspend fun findByUsername(username: String): User?
+    suspend fun getRoleById(id: Long): Role
 }
 
 object FakeUserRepository {

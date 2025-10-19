@@ -2,7 +2,9 @@ package routes
 
 import api.models.User
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.ApplicationCall
 import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.authentication
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
 import io.ktor.server.request.receiveNullable
@@ -16,6 +18,22 @@ import requests.AuthRequest
 import responses.AuthResponse
 import service.TokenService
 import service.UserService
+import api.models.Role
+import io.ktor.server.response.respondText
+
+suspend fun ApplicationCall.requireAdmin(): Boolean {
+    val user = UserService()
+    val principal = authentication.principal<JWTPrincipal>()
+    val id = principal?.getClaim("userId", String::class)?.toLong()
+    if (id != null) {
+        val role = user.getRoleById(id)
+        return (role == Role.ADMIN)
+    } else{
+        return false
+    }
+
+}
+
 
 fun Route.signUp(
     tempUser : UserService
@@ -86,7 +104,11 @@ fun Route.signIn(
 fun Route.authenticated() {
     authenticate {
         get("/authenticate"){
-            call.respond(HttpStatusCode.OK)
+            if(call.requireAdmin()){
+                call.respond(HttpStatusCode.OK, "You are an admin")
+            } else {
+                call.respond(HttpStatusCode.Unauthorized)
+            }
         }
     }
 }

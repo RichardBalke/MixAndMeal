@@ -1,5 +1,6 @@
 package service
 
+import api.models.Role
 import api.models.User
 import api.repository.FakeUserRepository.users
 import api.repository.FakeUserRepository.currentID
@@ -36,5 +37,9 @@ class UserService : UserRepository {
 
     override suspend fun update(entity: User) {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun getRoleById(id: Long): Role {
+        return findById(id)?.role ?: Role.USER
     }
 }
