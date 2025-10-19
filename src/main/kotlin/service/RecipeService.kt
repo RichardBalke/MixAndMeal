@@ -97,6 +97,6 @@ class RecipeService : RecipesRepository {
     }
 }
 
-suspend fun test() {
-    TODO()
+fun test2() {
+    TODO("Testing")
 }
