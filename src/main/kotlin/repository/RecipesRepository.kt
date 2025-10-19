@@ -22,7 +22,7 @@ interface RecipesRepository : CrudRepository<Recipes, Long> {
 }
 
 object FakeRecipeRepository {
-    var currentID: Long = 1
+    var currentID: Long = 0
     val recipes = mutableListOf<Recipes>()
     val recipeService = RecipeService()
 
@@ -48,6 +48,44 @@ object FakeRecipeRepository {
                     )
                 )
             )
+
+            recipeService.create(
+                Recipes(
+                    title = "Creamy Mushroom Risotto",
+                    description = "A rich and creamy risotto with earthy mushrooms and parmesan.",
+                    prepTime = 15,
+                    cookingTime = 300,
+                    difficulty = Difficulty.MEDIUM,
+                    image = "https://example.com/images/risotto.jpg",
+                    mealType = MealType.DINNER,
+                    kitchenStyle = KitchenStyle.ITALIAN,
+                    diets = listOf(Diets.VEGAN),
+                    ingredients = listOf<IngredientUnits>(
+                        ingredient1 as IngredientUnits,
+                        ingredient2 as IngredientUnits
+                    )
+                )
+            )
+
+            recipeService.create(
+                Recipes(
+                    title = "Creamy Mushroom Risotto",
+                    description = "A rich and creamy risotto with earthy mushrooms and parmesan.",
+                    prepTime = 15,
+                    cookingTime = 300,
+                    difficulty = Difficulty.MEDIUM,
+                    image = "https://example.com/images/risotto.jpg",
+                    mealType = MealType.DINNER,
+                    kitchenStyle = KitchenStyle.ITALIAN,
+                    diets = listOf(Diets.VEGAN),
+                    ingredients = listOf<IngredientUnits>(
+                        ingredient1 as IngredientUnits,
+                        ingredient2 as IngredientUnits
+                    )
+                )
+            )
+
+
         }
     }
 

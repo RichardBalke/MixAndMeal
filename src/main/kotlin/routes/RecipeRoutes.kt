@@ -12,7 +12,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import service.RecipeService
 
-fun Route.recipesRoutes(repository: RecipesRepository) {
+fun Route.recipesRoutes(repository: RecipeService) {
 
     route("/recipes") {
 
@@ -106,17 +106,20 @@ fun Route.recipesRoutes(repository: RecipesRepository) {
                 call.respond(recipes)
             }
 
-            get("/recipes/{id}") {
-                // controleert of de parameter {id} in de url naar een Long type geconvert kan worden.
-                val id: Long = call.parameters["id"]?.toLongOrNull()
-                    ?: return@get call.respond(HttpStatusCode.BadRequest)
 
-                // controleert of de user met 'id' bestaat
-                val recipe = FakeRecipeRepository.recipeService.findById(id)
-                    ?: return@get call.respond(HttpStatusCode.NotFound)
+        }
 
-                call.respond(HttpStatusCode.OK, recipe)
-            }
+        get("/{id}") {
+            // controleert of de parameter {id} in de url naar een Long type geconvert kan worden.
+            val id: Long = call.parameters["id"]?.toLongOrNull()
+                ?: return@get call.respond(HttpStatusCode.BadRequest)
+
+            // controleert of de user met 'id' bestaat
+//                val recipe = FakeRecipeRepository.recipeService.findById(id)
+            val recipe = repository.findById(id)
+                ?: return@get call.respond(HttpStatusCode.NotFound)
+
+            call.respond(HttpStatusCode.OK, recipe)
         }
 
 
