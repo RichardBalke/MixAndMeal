@@ -31,4 +31,11 @@ dependencies {
     implementation("io.ktor:ktor-serialization-gson:3.3.0")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 }
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+
