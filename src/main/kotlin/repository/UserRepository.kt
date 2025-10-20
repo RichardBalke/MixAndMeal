@@ -1,5 +1,7 @@
 package api.repository
 
+import api.models.Allergens
+import api.models.Recipes
 import api.models.Role
 import api.models.User
 import kotlinx.coroutines.runBlocking
@@ -8,6 +10,10 @@ import service.UserService
 
 interface UserRepository : CrudRepository<User, Long> {
     suspend fun findByUsername(username: String): User?
+    suspend fun findByEmail(email: String): User?
+    suspend fun addFavourite(userId: Long, recipe: Recipes) : User?
+    suspend fun removeFavourite(userId: Long, recipe: Recipes): User?
+    suspend fun updateAllergens(userId: Long, allergens: List<Allergens>) : List<Allergens>
 }
 
 object FakeUserRepository {

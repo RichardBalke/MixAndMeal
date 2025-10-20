@@ -15,7 +15,7 @@ data class Recipes (
     val kitchenStyle: KitchenStyle?,
     val diets: List<Diets>,
     val ingredients: List<IngredientUnits>
-//    val favourites: List<Recipes>
+
 ) {
 
     companion object {

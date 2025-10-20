@@ -95,8 +95,18 @@ class RecipeService : RecipesRepository {
     override suspend fun update(entity: Recipes) {
         TODO("Not yet implemented")
     }
-}
 
-suspend fun test() {
-    TODO()
+//    Ingredienten en recepten matching functie. Matcht op minsten 1 ingredient aanwezig. sortering op beste matches
+//
+//    suspend fun findBestMatchesByIngredients(selectedIngredients: List<String>): List<Pair<Recipe, Double>> {
+//        return recipes
+//            .map { recipe ->
+//                val totalIngredients = recipe.ingredients.size
+//                val matchedCount = recipe.ingredients.count { selectedIngredients.contains(it.ingredient.name) }
+//                val matchPercentage = if (totalIngredients > 0) matchedCount.toDouble() / totalIngredients else 0.0
+//                recipe to matchPercentage
+//            }
+//            .filter { it.second > 0 }
+//            .sortedByDescending { it.second }
+//    }
 }

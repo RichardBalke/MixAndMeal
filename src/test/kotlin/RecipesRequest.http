@@ -76,3 +76,5 @@ DELETE http://localhost:8080/recipes/1
 ### Update recipe
 PUT http://localhost:8080/recipes/1
 Content-Type: application/json
+
+GET http://localhost:8080/favourites/userid
