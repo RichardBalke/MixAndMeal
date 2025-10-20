@@ -52,23 +52,27 @@ import io.ktor.server.application.*
 
                 if (recipe != null) {
                     val updatedUser = userService.addFavourite(id, recipe)
-                    call.respond(HttpStatusCode.OK, updatedUser.favourites)
+                    if (updatedUser != null) {
+                        call.respond(HttpStatusCode.OK, updatedUser.favourites)
+                    } else {
+                        call.respond(HttpStatusCode.NotFound)
+                    }
                 } else {
                     call.respond(HttpStatusCode.NotFound)
                 }
             }
 
-            delete("/{id}/favourites") {
-                val id = call.parameters["id"]?.toLongOrNull()
-                    ?: return@delete call.respond(HttpStatusCode.BadRequest)
-
-                val recipeId = call.receive<Long>()
-
-                val updatedUser = userService.removeFavourite(id, recipeId)
-                    ?: return@delete call.respond(HttpStatusCode.NotFound, "User not found")
-
-                call.respond(HttpStatusCode.OK, updatedUser.favourites)
-            }
+//            delete("/{id}/favourites") {
+//                val id = call.parameters["id"]?.toLongOrNull()
+//                    ?: return@delete call.respond(HttpStatusCode.BadRequest)
+//
+//                val recipeId = call.receive<Long>()
+//
+//                val updatedUser = userService.removeFavourite(id, recipeId)
+//                    ?: return@delete call.respond(HttpStatusCode.NotFound, "User not found")
+//
+//                call.respond(HttpStatusCode.OK, updatedUser.favourites)
+//            }
 
             post {
                 val newUser = call.receive<User>()
