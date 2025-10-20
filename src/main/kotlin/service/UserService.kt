@@ -1,6 +1,7 @@
 package service
 
 import api.models.Allergens
+import api.models.Role
 import api.models.User
 import api.models.Recipes
 import api.models.Ingredients
@@ -114,4 +115,8 @@ class UserService : UserRepository {
 
 
 
+
+    override suspend fun getRoleById(id: Long): Role {
+        return findById(id)?.role ?: Role.USER
+    }
 }

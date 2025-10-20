@@ -14,6 +14,7 @@ interface UserRepository : CrudRepository<User, Long> {
     suspend fun addFavourite(userId: Long, recipe: Recipes) : User?
     suspend fun removeFavourite(userId: Long, recipe: Recipes): User?
     suspend fun updateAllergens(userId: Long, allergens: List<Allergens>) : List<Allergens>
+    suspend fun getRoleById(id: Long): Role
 }
 
 object FakeUserRepository {
