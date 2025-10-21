@@ -16,9 +16,10 @@ import io.ktor.server.routing.delete
 import routes.requireAdmin
 import service.UserService
 import io.ktor.server.application.*
+import routes.authenticatedUserId
 
 
-fun Route.userRoutes(userService: UserService) {
+ fun Route.userRoutes(userService: UserService) {
     // authenticate zorgt ervoor dat alleen ingelogde users de routes kunnen gebruiken.
     authenticate{
         route("/users") {
@@ -39,13 +40,20 @@ fun Route.userRoutes(userService: UserService) {
                 val id: Long = call.parameters["id"]?.toLongOrNull()
                     ?: return@get call.respond(HttpStatusCode.BadRequest)
 
-                // controleert of de user met 'id' bestaat
-                val user = userService.findById(id)
-                    ?: return@get call.respond(HttpStatusCode.NotFound)
+                if(id == call.authenticatedUserId()){
+                    val user = userService.findById(id)
+                        ?: return@get call.respond(HttpStatusCode.NotFound)
 
-                call.respond(HttpStatusCode.OK, user)
+                    call.respond(HttpStatusCode.OK, user)
+                }else if(call.requireAdmin()){
+                    val user = userService.findById(id)
+                        ?: return@get call.respond(HttpStatusCode.NotFound)
 
-
+                    call.respond(HttpStatusCode.OK, user)
+                }
+                else{
+                    call.respond(HttpStatusCode.Unauthorized)
+                }
             }
 
             get("/favourites/{id}") {}

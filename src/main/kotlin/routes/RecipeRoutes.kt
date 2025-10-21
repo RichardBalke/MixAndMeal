@@ -7,6 +7,7 @@ import api.repository.FakeRecipeRepository
 import api.repository.RecipesRepository
 import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
 import io.ktor.server.http.httpDateFormat
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -18,7 +19,7 @@ import io.ktor.server.routing.route
 import service.RecipeService
 
 fun Route.recipesRoutes(repository: RecipeService) {
-
+authenticate {
     route("/recipes") {
 
         // Get all recipes
@@ -26,7 +27,7 @@ fun Route.recipesRoutes(repository: RecipeService) {
             call.respond(repository.findAll())
         }
 
-        post{
+        post {
             val request = call.receive<Recipes>()
             val created = repository.create(request)
             call.respond(HttpStatusCode.Created, created)
@@ -148,6 +149,6 @@ fun Route.recipesRoutes(repository: RecipeService) {
         }
 
 
-
     }
+}
 }

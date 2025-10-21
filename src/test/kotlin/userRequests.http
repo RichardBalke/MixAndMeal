@@ -1,5 +1,6 @@
 #Replace token with new token
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYwOTg5OTM0LCJ1c2VySWQiOiIyIn0.0CCo7wsQ6ZErWlqbkP-LPOsLw0KsVgtv-CPFNyRFkIA
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMTM1NDI3LCJ1c2VySWQiOiIxIn0.lPXshibiwBjuA8JnuP7IBbjbfbIArM2UFXmYvC2ihiY
+@token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMTM1NDExLCJ1c2VySWQiOiIyIn0.W9qOAyRSFRKCAl1BtMNx9mkDScgsxuUqJKjUmEtFwh0
 ###
 GET http://127.0.0.1:8080/users
 Content-Type: application/json
@@ -49,12 +50,12 @@ Content-Type: application/json
 ###
 GET http://127.0.0.1:8080/authenticate
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token2}}
 
 ###
 
 ###
 GET http://127.0.0.1:8080/secret
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token2}}
 ###

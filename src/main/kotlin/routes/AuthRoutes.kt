@@ -21,6 +21,17 @@ import service.UserService
 import api.models.Role
 import io.ktor.server.response.respondText
 
+suspend fun ApplicationCall.authenticatedUserId(): Long {
+    val user = UserService()
+    val principal = authentication.principal<JWTPrincipal>()
+    val id = principal?.getClaim("userId", String::class)?.toLong()
+    if (id != null) {
+        return id
+    } else{
+        return -1
+    }
+}
+
 suspend fun ApplicationCall.requireAdmin(): Boolean {
     val user = UserService()
     val principal = authentication.principal<JWTPrincipal>()
