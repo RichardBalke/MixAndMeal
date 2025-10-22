@@ -1,6 +1,8 @@
-### Create a new recipe
+
+@token = put-token-here### Create a new recipe
 POST http://localhost:8080/recipes
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "title": "Spicy Lentil Soup",
@@ -72,9 +74,15 @@ GET http://localhost:8080/recipes/1
 
 ### Delete recipe by ID
 DELETE http://localhost:8080/recipes/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Update recipe
 PUT http://localhost:8080/recipes/1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
+### get favorites list from user
 GET http://localhost:8080/favourites/userid
+Content-Type: application/json
+Authorization: Bearer {{token}}
