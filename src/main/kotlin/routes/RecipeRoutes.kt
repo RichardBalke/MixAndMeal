@@ -15,6 +15,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import service.RecipeService
 
@@ -151,29 +152,29 @@ fun Route.recipesRoutes(repository: RecipeService) {
 
             put("/{id}") {
                 val id = call.parameters["id"]?.toLongOrNull()
-                    ?: return@put call.respond(HttpStatusCode.BadRequest, "Invalid ID")
+                    ?: return@put call.respond(HttpStatusCode.BadRequest, "Invalid ID format")
 
-                val request: Recipes = try {
-                    call.receive()
-                } catch (e: Throwable) {
-                    // Return a helpful 400 when body can't be parsed
+                val request = try {
+                    call.receive<Recipes>()
+                } catch (e: Exception) {
                     return@put call.respond(
                         HttpStatusCode.BadRequest,
                         "Invalid request body: ${e.message ?: "malformed JSON"}"
                     )
                 }
 
-                val toUpdate = if (request.id == 0L || request.id != id) request.copy(id = id) else request
+                val updatedRecipe = request.copy(id = id)
 
                 try {
-                    repository.update(toUpdate)
-                    call.respond(HttpStatusCode.OK, toUpdate)
+                    repository.update(updatedRecipe)
+                    call.respond(HttpStatusCode.OK, updatedRecipe)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.NotFound, e.message ?: "Recipe not found")
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.InternalServerError, "Update failed")
+                    call.respond(HttpStatusCode.InternalServerError, "Update failed: ${e.message}")
                 }
             }
+
         }
     }
 }
