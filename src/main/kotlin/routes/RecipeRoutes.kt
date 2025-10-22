@@ -15,7 +15,6 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
-import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import service.RecipeService
 
@@ -27,11 +26,12 @@ fun Route.recipesRoutes(repository: RecipeService) {
         get {
             call.respond(repository.findAll())
         }
-
-        post {
-            val request = call.receive<Recipes>()
-            val created = repository.create(request)
-            call.respond(HttpStatusCode.Created, created)
+        authenticate {
+            post {
+                val request = call.receive<Recipes>()
+                val created = repository.create(request)
+                call.respond(HttpStatusCode.Created, created)
+            }
         }
 
         //Get recipes by title
@@ -134,23 +134,20 @@ fun Route.recipesRoutes(repository: RecipeService) {
 
             call.respond(HttpStatusCode.OK, recipe)
         }
+        authenticate {
+            delete("/{id}") {
+                // controleert of de parameter {id} in de url naar een Long type geconvert kan worden.
+                val id: Long = call.parameters["id"]?.toLongOrNull()
+                    ?: return@delete call.respond(HttpStatusCode.BadRequest)
 
-        delete("/{id}") {
-            // controleert of de parameter {id} in de url naar een Long type geconvert kan worden.
-            val id: Long = call.parameters["id"]?.toLongOrNull()
-                ?: return@delete call.respond(HttpStatusCode.BadRequest)
-
-            val succes = repository.delete(id)
-            if (succes) {
-                call.respond(HttpStatusCode.OK, "Recipe with id: $id succesfully deleted.")
-            } else {
-                call.respond(HttpStatusCode.NotFound, "Recipe with id: $id not found.")
-            }
+                val succes = repository.delete(id)
+                if (succes) {
+                    call.respond(HttpStatusCode.OK, "Recipe with id: $id succesfully deleted.")
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Recipe with id: $id not found.")
+                }
 
         }
-        put("/{id}") {
-            val id = call.parameters["id"]?.toLongOrNull()
-                ?: return@put call.respond(HttpStatusCode.BadRequest, "Invalid ID")
 
             val request = call.receive<Recipes>()
             val toUpdate = if (request.id == 0L || request.id != id) request.copy(id = id) else request

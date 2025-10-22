@@ -1,3 +1,4 @@
+@token = put-token-here
 ### Get all ingredients
 GET http://localhost:8080/ingredients
 Accept: application/json
@@ -19,6 +20,7 @@ Accept: application/json
 ### Create a new ingredient
 POST http://localhost:8080/ingredients
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Banana",
@@ -31,6 +33,7 @@ Content-Type: application/json
 ### Update an existing ingredient
 PUT http://localhost:8080/ingredients
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "id": 2,
@@ -44,6 +47,7 @@ Content-Type: application/json
 ### Update allergens for an ingredient
 PATCH http://localhost:8080/ingredients/3/allergens
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 [
   "PEANUTS",
@@ -55,3 +59,5 @@ Content-Type: application/json
 ### Delete an ingredient
 DELETE http://localhost:8080/ingredients/1
 Accept: application/json
+Authorization: Bearer {{token}}
+###

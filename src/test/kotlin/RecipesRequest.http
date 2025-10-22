@@ -72,10 +72,13 @@ GET http://localhost:8080/recipes/1
 
 ### Delete recipe by ID
 DELETE http://localhost:8080/recipes/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Update recipe
 PUT http://localhost:8080/recipes/1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "title": "Spicy Lentil Soup (Updated)",
@@ -125,3 +128,7 @@ Content-Type: application/json
 }
 
 //GET http://localhost:8080/favourites/userid
+### get favorites list from user
+GET http://localhost:8080/favourites/userid
+Content-Type: application/json
+Authorization: Bearer {{token}}
