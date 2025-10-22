@@ -15,10 +15,8 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
-import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import service.RecipeService
-import kotlin.text.get
 
 fun Route.recipesRoutes(repository: RecipeService) {
 
