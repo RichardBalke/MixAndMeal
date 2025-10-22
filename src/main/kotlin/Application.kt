@@ -3,6 +3,7 @@ package api
 import io.ktor.server.application.*
 import models.TokenConfig
 import service.JwtService
+import service.InMemoryUserService
 import service.UserService
 
 fun main(args: Array<String>) {
@@ -18,7 +19,7 @@ fun Application.module() {
         expiresIn = 1000L * 60L * 60L * 24L,
         secret = System.getenv("JWT_SECRET")
     )
-    val tempUser = UserService()
+    val tempUser: UserService = InMemoryUserService()
 
     configureSerialization()
     configureSecurity(tokenConfig)

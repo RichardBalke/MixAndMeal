@@ -16,7 +16,7 @@ class UserServiceTest {
         // Leeg de fake repository voor elke test
         FakeUserRepository.users.clear()
         FakeUserRepository.currentID = 0
-        userService = UserService()
+        userService = InMemoryUserService()
     }
 
     @Test

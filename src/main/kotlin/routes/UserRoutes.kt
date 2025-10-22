@@ -1,7 +1,6 @@
 package api.routes
 
 import api.models.Role
-import api.repository.UserRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
 import io.ktor.server.response.respond

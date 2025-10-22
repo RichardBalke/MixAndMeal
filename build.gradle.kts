@@ -35,7 +35,8 @@ dependencies {
     testImplementation("io.ktor:ktor-client-cio:3.3.0")
     testImplementation("io.ktor:ktor-server-test-host:3.3.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
-    testImplementation("io.mockk:mockk:1.13.11")
+    testImplementation("io.mockk:mockk:1.13.13")
+    testImplementation("io.mockk:mockk-agent-jvm:1.13.13")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     testImplementation(kotlin("test"))
 }
