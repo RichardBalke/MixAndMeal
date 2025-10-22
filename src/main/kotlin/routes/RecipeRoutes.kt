@@ -15,8 +15,10 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import service.RecipeService
+import kotlin.text.get
 
 fun Route.recipesRoutes(repository: RecipeService) {
 
@@ -147,20 +149,33 @@ fun Route.recipesRoutes(repository: RecipeService) {
                     call.respond(HttpStatusCode.NotFound, "Recipe with id: $id not found.")
                 }
 
-        }
+            }
 
-            val request = call.receive<Recipes>()
-            val toUpdate = if (request.id == 0L || request.id != id) request.copy(id = id) else request
+            put("/{id}") {
+                val id = call.parameters["id"]?.toLongOrNull()
+                    ?: return@put call.respond(HttpStatusCode.BadRequest, "Invalid ID")
 
-            try {
-                repository.update(toUpdate)
-                call.respond(HttpStatusCode.OK, toUpdate)
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.NotFound, e.message ?: "Recipe not found")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Update failed")
+                val request: Recipes = try {
+                    call.receive()
+                } catch (e: Throwable) {
+                    // Return a helpful 400 when body can't be parsed
+                    return@put call.respond(
+                        HttpStatusCode.BadRequest,
+                        "Invalid request body: ${e.message ?: "malformed JSON"}"
+                    )
+                }
+
+                val toUpdate = if (request.id == 0L || request.id != id) request.copy(id = id) else request
+
+                try {
+                    repository.update(toUpdate)
+                    call.respond(HttpStatusCode.OK, toUpdate)
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.NotFound, e.message ?: "Recipe not found")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Update failed")
+                }
             }
         }
-
     }
 }
