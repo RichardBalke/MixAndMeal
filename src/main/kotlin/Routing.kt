@@ -4,6 +4,7 @@ import api.repository.FakeIngredientsRepository
 import api.routes.ingredientsRoutes
 import api.routes.userRoutes
 import api.routes.recipesRoutes
+import api.service.IngredientService
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -23,7 +24,7 @@ fun Application.configureRouting(
     ) {
     routing {
         userRoutes(tempUser)
-        ingredientsRoutes(FakeIngredientsRepository)
+        ingredientsRoutes(IngredientService())
         recipesRoutes(RecipeService())
 
         signUp(tempUser)
