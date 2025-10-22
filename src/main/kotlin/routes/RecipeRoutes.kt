@@ -15,11 +15,12 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import service.RecipeService
 
 fun Route.recipesRoutes(repository: RecipeService) {
-authenticate {
+
     route("/recipes") {
 
         // Get all recipes
@@ -147,8 +148,22 @@ authenticate {
             }
 
         }
+        put("/{id}") {
+            val id = call.parameters["id"]?.toLongOrNull()
+                ?: return@put call.respond(HttpStatusCode.BadRequest, "Invalid ID")
 
+            val request = call.receive<Recipes>()
+            val toUpdate = if (request.id == 0L || request.id != id) request.copy(id = id) else request
+
+            try {
+                repository.update(toUpdate)
+                call.respond(HttpStatusCode.OK, toUpdate)
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.NotFound, e.message ?: "Recipe not found")
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.InternalServerError, "Update failed")
+            }
+        }
 
     }
-}
 }
