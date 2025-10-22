@@ -46,9 +46,7 @@ suspend fun ApplicationCall.requireAdmin(): Boolean {
 }
 
 
-fun Route.signUp(
-    tempUser : UserService
-){
+fun Route.signUp(tempUser : UserService){
     post("/signup"){
         val request = call.receiveNullable<AuthRequest>() ?: kotlin.run{
             call.respond(HttpStatusCode.BadRequest)
