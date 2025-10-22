@@ -33,6 +33,7 @@ fun Route.recipesRoutes(repository: RecipeService) {
                 call.respond(HttpStatusCode.Created, created)
             }
         }
+
         //Get recipes by title
         get("/title/{title}") {
             val name = call.parameters["title"].toString()
@@ -146,9 +147,20 @@ fun Route.recipesRoutes(repository: RecipeService) {
                     call.respond(HttpStatusCode.NotFound, "Recipe with id: $id not found.")
                 }
 
-            }
-
-
         }
-}
+
+            val request = call.receive<Recipes>()
+            val toUpdate = if (request.id == 0L || request.id != id) request.copy(id = id) else request
+
+            try {
+                repository.update(toUpdate)
+                call.respond(HttpStatusCode.OK, toUpdate)
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.NotFound, e.message ?: "Recipe not found")
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.InternalServerError, "Update failed")
+            }
+        }
+
+    }
 }

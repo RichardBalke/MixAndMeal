@@ -1,8 +1,6 @@
-
-@token = put-token-here### Create a new recipe
+### Create a new recipe
 POST http://localhost:8080/recipes
 Content-Type: application/json
-Authorization: Bearer {{token}}
 
 {
   "title": "Spicy Lentil Soup",
@@ -82,6 +80,54 @@ PUT http://localhost:8080/recipes/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+{
+  "title": "Spicy Lentil Soup (Updated)",
+  "description": "A hearty and spicy lentil soup perfect for dinner.",
+  "prepTime": 20,
+  "cookingTime": 40,
+  "difficulty": "MEDIUM",
+  "image": "spicy_lentil_soup.jpg",
+  "mealType": "DINNER",
+  "kitchenStyle": "INDIAN",
+  "diets": [
+    "VEGAN"
+  ],
+  "ingredients": [
+    {
+      "ingredient": {
+        "name": "Lentils",
+        "description": "Hearty and protein-rich lentils",
+        "allergens": [],
+        "id": 4
+      },
+      "amount": 0.15,
+      "unitType": "KG"
+    },
+    {
+      "ingredient": {
+        "name": "Tomatoes",
+        "description": "Fresh ripe tomatoes",
+        "allergens": [],
+        "id": 5
+      },
+      "amount": 3.5,
+      "unitType": "GRAMS"
+    },
+
+    {
+      "ingredient": {
+        "name": "Mixed Spices",
+        "description": "A mix of Indian spices",
+        "allergens": [],
+        "id": 6
+      },
+      "amount": 2.5,
+      "unitType": "GRAMS"
+    }
+  ]
+}
+
+//GET http://localhost:8080/favourites/userid
 ### get favorites list from user
 GET http://localhost:8080/favourites/userid
 Content-Type: application/json

@@ -93,7 +93,10 @@ class RecipeService : RecipesRepository {
     }
 
     override suspend fun update(entity: Recipes) {
-        TODO("Not yet implemented")
+        check(entity.id > 0) { "ID must be greater than 0." }
+        val index = recipes.indexOfFirst { it.id == entity.id }
+        require(index != -1) { "Recipe with ID ${entity.id} not found." }
+        recipes[index] = entity
     }
 
 //    Ingredienten en recepten matching functie. Matcht op minsten 1 ingredient aanwezig. sortering op beste matches
