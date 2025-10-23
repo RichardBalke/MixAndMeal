@@ -13,13 +13,14 @@ import routes.authenticated
 import routes.getSecretInfo
 import routes.signIn
 import routes.signUp
+import service.JwtService
 import service.RecipeService
 import service.TokenService
 import service.UserService
 
 fun Application.configureRouting(
     tempUser : UserService,
-    tokenService: TokenService,
+    tokenService: JwtService,
     tokenConfig: TokenConfig
     ) {
     routing {

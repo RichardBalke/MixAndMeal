@@ -16,10 +16,9 @@ import models.TokenClaim
 import models.TokenConfig
 import requests.AuthRequest
 import responses.AuthResponse
-import service.TokenService
 import service.UserService
 import api.models.Role
-import io.ktor.server.response.respondText
+import service.JwtService
 
 suspend fun ApplicationCall.authenticatedUserId(): Long {
     val user = UserService()
@@ -75,7 +74,7 @@ fun Route.signUp(tempUser : UserService){
 
 fun Route.signIn(
     tempUser : UserService,
-    tokenService: TokenService,
+    tokenService: JwtService,
     tokenConfig : TokenConfig
 ){
     post("/signin"){

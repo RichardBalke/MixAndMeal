@@ -1,4 +1,4 @@
-@token = put-token-here
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzA3MDUwLCJ1c2VySWQiOiIxIn0.6tcBWYFRzOvH2-OOpNAqcn8nRfS5NMduQbnStUXYRCI
 ### Get all ingredients
 GET http://localhost:8080/ingredients
 Accept: application/json
