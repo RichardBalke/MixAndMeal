@@ -18,6 +18,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import service.RecipeService
+import service.requireAdmin
 
 fun Route.recipesRoutes(repository: RecipeService) {
 
@@ -29,9 +30,14 @@ fun Route.recipesRoutes(repository: RecipeService) {
         }
         authenticate {
             post {
-                val request = call.receive<Recipes>()
-                val created = repository.create(request)
-                call.respond(HttpStatusCode.Created, created)
+                if(call.requireAdmin()){
+                    val request = call.receive<Recipes>()
+                    val created = repository.create(request)
+                    call.respond(HttpStatusCode.Created, created)
+                } else {
+                    call.respond(HttpStatusCode.Unauthorized)
+                }
+
             }
         }
 
@@ -137,42 +143,52 @@ fun Route.recipesRoutes(repository: RecipeService) {
         }
         authenticate {
             delete("/{id}") {
-                // controleert of de parameter {id} in de url naar een Long type geconvert kan worden.
-                val id: Long = call.parameters["id"]?.toLongOrNull()
-                    ?: return@delete call.respond(HttpStatusCode.BadRequest)
+                if(call.requireAdmin()){
+                    // controleert of de parameter {id} in de url naar een Long type geconvert kan worden.
+                    val id: Long = call.parameters["id"]?.toLongOrNull()
+                        ?: return@delete call.respond(HttpStatusCode.BadRequest)
 
-                val succes = repository.delete(id)
-                if (succes) {
-                    call.respond(HttpStatusCode.OK, "Recipe with id: $id succesfully deleted.")
+                    val succes = repository.delete(id)
+                    if (succes) {
+                        call.respond(HttpStatusCode.OK, "Recipe with id: $id succesfully deleted.")
+                    } else {
+                        call.respond(HttpStatusCode.NotFound, "Recipe with id: $id not found.")
+                    }
                 } else {
-                    call.respond(HttpStatusCode.NotFound, "Recipe with id: $id not found.")
+                    call.respond(HttpStatusCode.Unauthorized)
                 }
+
 
             }
 
             put("/{id}") {
-                val id = call.parameters["id"]?.toLongOrNull()
-                    ?: return@put call.respond(HttpStatusCode.BadRequest, "Invalid ID format")
+                if(call.requireAdmin()){
+                    val id = call.parameters["id"]?.toLongOrNull()
+                        ?: return@put call.respond(HttpStatusCode.BadRequest, "Invalid ID format")
 
-                val request = try {
-                    call.receive<Recipes>()
-                } catch (e: Exception) {
-                    return@put call.respond(
-                        HttpStatusCode.BadRequest,
-                        "Invalid request body: ${e.message ?: "malformed JSON"}"
-                    )
+                    val request = try {
+                        call.receive<Recipes>()
+                    } catch (e: Exception) {
+                        return@put call.respond(
+                            HttpStatusCode.BadRequest,
+                            "Invalid request body: ${e.message ?: "malformed JSON"}"
+                        )
+                    }
+
+                    val updatedRecipe = request.copy(id = id)
+
+                    try {
+                        repository.update(updatedRecipe)
+                        call.respond(HttpStatusCode.OK, updatedRecipe)
+                    } catch (e: IllegalArgumentException) {
+                        call.respond(HttpStatusCode.NotFound, e.message ?: "Recipe not found")
+                    } catch (e: Exception) {
+                        call.respond(HttpStatusCode.InternalServerError, "Update failed: ${e.message}")
+                    }
+                } else {
+                    call.respond(HttpStatusCode.Unauthorized)
                 }
 
-                val updatedRecipe = request.copy(id = id)
-
-                try {
-                    repository.update(updatedRecipe)
-                    call.respond(HttpStatusCode.OK, updatedRecipe)
-                } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.NotFound, e.message ?: "Recipe not found")
-                } catch (e: Exception) {
-                    call.respond(HttpStatusCode.InternalServerError, "Update failed: ${e.message}")
-                }
             }
 
         }

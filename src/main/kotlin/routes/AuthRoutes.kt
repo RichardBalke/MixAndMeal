@@ -14,6 +14,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import models.TokenClaim
 import models.TokenConfig
+import org.h2.command.Token
 import requests.AuthRequest
 import responses.AuthResponse
 import service.UserService

@@ -13,10 +13,10 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.delete
-import routes.requireAdmin
 import service.UserService
 import io.ktor.server.application.*
-import routes.authenticatedUserId
+import service.authenticatedUserId
+import service.requireAdmin
 
 
  fun Route.userRoutes(userService: UserService) {
