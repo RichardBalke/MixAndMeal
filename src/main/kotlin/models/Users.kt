@@ -9,9 +9,9 @@ data class User(
     val email: String,
 //    val locationSettings: LocationSettings(), wordt toegevoegd bij implementatie app
     val role: Role = Role.USER,
-    val favourites: List<Recipes> = listOf<Recipes>(),
+    val favourites: MutableList<Recipes> = mutableListOf<Recipes>(),
 //    val fridge: List<Ingredients> = emptyList(), wordt toegevoegd bij implementatie app
-    val allergens: List<Allergens> = listOf<Allergens>(),
+    val allergens: MutableList<Allergens> = mutableListOf<Allergens>(),
     val id: Long = NEW_USER_ID
 ) {
     companion object {

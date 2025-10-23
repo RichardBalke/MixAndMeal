@@ -1,5 +1,6 @@
 package api.routes
 
+import api.models.Recipes
 import api.models.Role
 import api.models.User
 import api.repository.FakeRecipeRepository.recipeService
@@ -17,7 +18,7 @@ import service.UserService
 import io.ktor.server.application.*
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
-import routes.authenticatedUserId
+import io.ktor.server.request.receiveNullable
 import service.authenticatedUserId
 import service.requireAdmin
 
@@ -58,52 +59,77 @@ fun Route.userRoutes(userService: UserService) {
                 }
             }
 
-            get("/favourites/{id}") {
+            post("/favo"){
                 val principal = call.principal<JWTPrincipal>()
-                val userId = principal?.getClaim("userId", String::class)?.toLong()
+                val userId = principal?.getClaim("userId", String::class)?.toLongOrNull()
+                    ?: return@post call.respond(HttpStatusCode.BadRequest, "User is not in token")
 
-                val recipeId = call.parameters["id"]?.toLongOrNull()
-                    ?: return@get call.respond(HttpStatusCode.BadRequest)
+                val user = userService.findById(userId)
+                    ?: return@post call.respond(HttpStatusCode.NotFound, "user not found")
 
-                val recipe = recipeService.findById(recipeId)
-                if (recipe == null) {
-                    return@get call.respond(HttpStatusCode.NotFound, "Recipe not found.")
+                val request = call.receiveNullable<Recipes>() ?: kotlin.run{
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@post
                 }
 
-                if (userId != null) {
-                    val updatedUser = userService.addFavourite(userId, recipe)
-
-                    if (updatedUser != null) {
-                        call.respond(HttpStatusCode.OK, updatedUser.favourites)
-                    }
-                } else {
-                    call.respond(HttpStatusCode.NotFound, "User not found.")
+                if(user.favourites.any{it.id == request.id }) {
+                    user.favourites.remove(request)
+                    call.respond(HttpStatusCode.Accepted, user.favourites)
                 }
-            }
-
-            post("/favourites/{recipeId}") {
-                val principal = call.principal<JWTPrincipal>()
-                val userId = principal?.getClaim("userId", String::class)?.toLong()
-
-                val recipeId = call.parameters["recipeId"]?.toLongOrNull()
-                    ?: return@post call.respond(HttpStatusCode.BadRequest)
-
-                if (recipeId != null) {
-                    val recipe = recipeService.findById(recipeId)
-
-                    if (recipe != null && userId != null) {
-                        val updatedUser = userService.addFavourite(userId, recipe)
-                        if (updatedUser != null) {
-                            call.respond(HttpStatusCode.OK, updatedUser.favourites)
-                        } else {
-                            call.respond(HttpStatusCode.Forbidden)
-                        }
-                    }
-                } else {
-                    call.respond(HttpStatusCode.NotFound, "recipe id: $recipeId")
+                else{
+                    user.favourites.add(request)
+                    call.respond(HttpStatusCode.Accepted, user.favourites)
                 }
 
             }
+
+            //
+//            get("/favourites/{id}") {
+//                val principal = call.principal<JWTPrincipal>()
+//                val userId = principal?.getClaim("userId", String::class)?.toLong()
+//
+//                val recipeId = call.parameters["id"]?.toLongOrNull()
+//                    ?: return@get call.respond(HttpStatusCode.BadRequest)
+//
+//                val recipe = recipeService.findById(recipeId)
+//                if (recipe == null) {
+//                    return@get call.respond(HttpStatusCode.NotFound, "Recipe not found.")
+//                }
+//
+//                if (userId != null) {
+//                    val updatedUser = userService.addFavourite(userId, recipe)
+//
+//                    if (updatedUser != null) {
+//                        call.respond(HttpStatusCode.OK, updatedUser.favourites)
+//                    }
+//                } else {
+//                    call.respond(HttpStatusCode.NotFound, "User not found.")
+//                }
+//            }
+
+//            post("/favourites/{recipeId}") {
+//                val principal = call.principal<JWTPrincipal>()
+//                val userId = principal?.getClaim("userId", String::class)?.toLong()
+//
+//                val recipeId = call.parameters["recipeId"]?.toLongOrNull()
+//                    ?: return@post call.respond(HttpStatusCode.BadRequest)
+//
+//                if (recipeId != null) {
+//                    val recipe = recipeService.findById(recipeId)
+//
+//                    if (recipe != null && userId != null) {
+//                        val updatedUser = userService.addFavourite(userId, recipe)
+//                        if (updatedUser != null) {
+//                            call.respond(HttpStatusCode.OK, updatedUser.favourites)
+//                        } else {
+//                            call.respond(HttpStatusCode.Forbidden)
+//                        }
+//                    }
+//                } else {
+//                    call.respond(HttpStatusCode.NotFound, "recipe id: $recipeId")
+//                }
+//
+//            }
 
 //            delete("/{id}/favourites") {
 //                val id = call.parameters["id"]?.toLongOrNull()

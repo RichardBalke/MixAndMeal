@@ -11,9 +11,9 @@ import service.UserService
 interface UserRepository : CrudRepository<User, Long> {
     suspend fun findByUsername(username: String): User?
     suspend fun findByEmail(email: String): User?
-    suspend fun addFavourite(userId: Long, recipe: Recipes) : User?
-    suspend fun removeFavourite(userId: Long, recipe: Recipes): User?
-    suspend fun updateAllergens(userId: Long, allergens: List<Allergens>) : List<Allergens>
+//    suspend fun addFavourite(userId: Long, recipe: Recipes) : User?
+//    suspend fun removeFavourite(userId: Long, recipe: Recipes): User?
+    suspend fun updateAllergens(userId: Long, allergens: MutableList<Allergens>) : MutableList<Allergens>
     suspend fun getRoleById(id: Long): Role
 }
 

@@ -61,11 +61,90 @@ Authorization: Bearer {{token}}
 ###
 
 ### get favorites list from user
-GET http://127.0.0.1:8080/favourites/1
+GET http://127.0.0.1:8080/users/favourites/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### post favorite item to user
-POST http://127.0.0.1:8080/favourites/1
+POST http://127.0.0.1:8080/users/favo
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+[
+  {
+  "id": 1,
+  "title": "Creamy Mushroom Risotto",
+  "description": "A rich and creamy risotto with earthy mushrooms and parmesan.",
+  "prepTime": 15,
+  "cookingTime": 300,
+  "difficulty": "MEDIUM",
+  "image": "https://example.com/images/risotto.jpg",
+  "mealType": "DINNER",
+  "kitchenStyle": "ITALIAN",
+  "diets": [
+    "VEGAN"
+  ],
+  "ingredients": [
+    {
+      "ingredient": {
+        "name": "Sugar",
+        "description": "A sweet substance",
+        "allergens": [],
+        "id": 2
+      },
+      "amount": 50.0,
+      "unitType": "GRAMS"
+    },
+    {
+      "ingredient": {
+        "name": "Peanut",
+        "description": "A tasty nut",
+        "allergens": [
+          "PEANUTS"
+        ],
+        "id": 3
+      },
+      "amount": 10.0,
+      "unitType": "GRAMS"
+    }
+  ]
+},
+{
+"id": 2,
+"title": "Creamy Mushroom Risotto",
+"description": "A rich and creamy risotto with earthy mushrooms and parmesan.",
+"prepTime": 15,
+"cookingTime": 300,
+"difficulty": "MEDIUM",
+"image": "https://example.com/images/risotto.jpg",
+"mealType": "DINNER",
+"kitchenStyle": "ITALIAN",
+"diets": [
+"VEGAN"
+],
+"ingredients": [
+{
+"ingredient": {
+"name": "Sugar",
+"description": "A sweet substance",
+"allergens": [],
+"id": 2
+},
+"amount": 50.0,
+"unitType": "GRAMS"
+},
+{
+"ingredient": {
+"name": "Peanut",
+"description": "A tasty nut",
+"allergens": [
+"PEANUTS"
+],
+"id": 3
+},
+"amount": 10.0,
+"unitType": "GRAMS"
+}
+]
+}]
+###

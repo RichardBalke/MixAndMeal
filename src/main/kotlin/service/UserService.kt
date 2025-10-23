@@ -4,7 +4,6 @@ import api.models.Allergens
 import api.models.Role
 import api.models.User
 import api.models.Recipes
-import api.models.Ingredients
 import api.repository.FakeUserRepository.users
 import api.repository.FakeUserRepository.currentID
 import api.repository.UserRepository
@@ -49,39 +48,39 @@ class UserService : UserRepository {
         }
     }
 
-    override suspend fun addFavourite(userId: Long, recipe: Recipes): User? {
-        val user = findById(userId)
-        if (user != null) {
-            if (user.favourites.any { it.id == recipe.id }) {
-                val updatedUser = user.copy(favourites = user.favourites + recipe)
-                update(updatedUser)
-                return updatedUser
-            } else {
-                return user
-            }
-        } else {
-            return null
-        }
-    }
+//    override suspend fun addFavourite(userId: Long, recipe: Recipes): User? {
+//        val user = findById(userId)
+//        if (user != null) {
+//            if (user.favourites.any { it.id != recipe.id }) {
+//                val updatedUser = user.copy(favourites = user.favourites + recipe)
+//                update(updatedUser)
+//                return updatedUser
+//            } else {
+//                return user
+//            }
+//        } else {
+//            return null
+//        }
+//    }
 
-    override suspend fun removeFavourite(userId: Long, recipe: Recipes): User? {
-        val user = findById(userId)
-        if (user != null) {
-            if (user.favourites.any { it.id == recipe.id }) {
-                val updatedFavourites = user.favourites.filterNot { it.id == recipe.id }
-                val updatedUser = user.copy(favourites = updatedFavourites)
-                update(updatedUser)
-                return updatedUser
-            } else {
-                return user
-            }
-        } else {
-            return null
-        }
-    }
+//    override suspend fun removeFavourite(userId: Long, recipe: Recipes): User? {
+//        val user = findById(userId)
+//        if (user != null) {
+//            if (user.favourites.any { it.id == recipe.id }) {
+//                val updatedFavourites = user.favourites.filterNot { it.id == recipe.id }
+//                val updatedUser = user.copy(favourites = updatedFavourites)
+//                update(updatedUser)
+//                return updatedUser
+//            } else {
+//                return user
+//            }
+//        } else {
+//            return null
+//        }
+//    }
 
 
-    override suspend fun updateAllergens(userId: Long, allergens: List<Allergens>): List<Allergens> {
+    override suspend fun updateAllergens(userId: Long, allergens: MutableList<Allergens>): MutableList<Allergens> {
         val user = findById(userId)
             ?: throw NoSuchElementException("User with ID $userId not found")
         val updatedUser = user.copy(allergens = allergens)
