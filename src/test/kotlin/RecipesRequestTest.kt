@@ -179,7 +179,7 @@ class RecipeServiceTest {
         val byDiff = service.findByDifficulty("medium")
         assertTrue(byDiff.any { it.id == r.id })
 
-        val byDiet = service.findByDiets("vegan")
+        val byDiet = service.findByDiets("veganistisch")
         assertTrue(byDiet.any { it.id == r.id })
 
         val byKitchen = service.findByKitchenStyle("italian")

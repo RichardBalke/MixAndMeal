@@ -1,5 +1,5 @@
 #Replace token with new token
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzA3MDUwLCJ1c2VySWQiOiIxIn0.6tcBWYFRzOvH2-OOpNAqcn8nRfS5NMduQbnStUXYRCI
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzEyMDk2LCJ1c2VySWQiOiIyIn0.vIF4fgMjnvZnr099zsn0Aj0GM2idiwS6GD8oUGOoxsw
 @token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMTM1NDExLCJ1c2VySWQiOiIyIn0.W9qOAyRSFRKCAl1BtMNx9mkDScgsxuUqJKjUmEtFwh0
 ###
 GET http://127.0.0.1:8080/users
@@ -59,3 +59,13 @@ GET http://127.0.0.1:8080/secret
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
+
+### get favorites list from user
+GET http://127.0.0.1:8080/favourites/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post favorite item to user
+POST http://127.0.0.1:8080/favourites/1
+Content-Type: application/json
+Authorization: Bearer {{token}}

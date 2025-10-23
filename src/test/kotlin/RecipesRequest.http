@@ -131,7 +131,3 @@ Authorization: Bearer {{token}}
 }
 
 
-### get favorites list from user
-GET http://localhost:8080/favourites/userid
-Content-Type: application/json
-Authorization: Bearer {{token}}
