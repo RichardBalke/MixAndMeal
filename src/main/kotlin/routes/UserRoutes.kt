@@ -1,4 +1,4 @@
- package api.routes
+package api.routes
 
 import api.models.Role
 import api.models.User
@@ -15,18 +15,21 @@ import io.ktor.server.routing.route
 import io.ktor.server.routing.delete
 import service.UserService
 import io.ktor.server.application.*
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
+import routes.authenticatedUserId
 import service.authenticatedUserId
 import service.requireAdmin
 
 
- fun Route.userRoutes(userService: UserService) {
+fun Route.userRoutes(userService: UserService) {
     // authenticate zorgt ervoor dat alleen ingelogde users de routes kunnen gebruiken.
-    authenticate{
+    authenticate {
         route("/users") {
 
             get {
                 // Deze if else statement check of de ingelogde user een admin rol heeft
-                if(call.requireAdmin()){
+                if (call.requireAdmin()) {
                     val users = userService.findAll()
                     call.respond(users)
                 } else {
@@ -40,42 +43,66 @@ import service.requireAdmin
                 val id: Long = call.parameters["id"]?.toLongOrNull()
                     ?: return@get call.respond(HttpStatusCode.BadRequest)
 
-                if(id == call.authenticatedUserId()){
+                if (id == call.authenticatedUserId()) {
                     val user = userService.findById(id)
                         ?: return@get call.respond(HttpStatusCode.NotFound)
 
                     call.respond(HttpStatusCode.OK, user)
-                }else if(call.requireAdmin()){
+                } else if (call.requireAdmin()) {
                     val user = userService.findById(id)
                         ?: return@get call.respond(HttpStatusCode.NotFound)
 
                     call.respond(HttpStatusCode.OK, user)
-                }
-                else{
+                } else {
                     call.respond(HttpStatusCode.Unauthorized)
                 }
             }
 
-            get("/favourites/{id}") {}
+            get("/favourites/{id}") {
+                val principal = call.principal<JWTPrincipal>()
+                val userId = principal?.getClaim("userId", String::class)?.toLong()
 
-            post("/favourites/{id}/{recipeId}") {
-                val id = call.parameters["id"]?.toLongOrNull()
-                    ?: return@post call.respond(HttpStatusCode.BadRequest)
+                val recipeId = call.parameters["id"]?.toLongOrNull()
+                    ?: return@get call.respond(HttpStatusCode.BadRequest)
+
+                val recipe = recipeService.findById(recipeId)
+                if (recipe == null) {
+                    return@get call.respond(HttpStatusCode.NotFound, "Recipe not found.")
+                }
+
+                if (userId != null) {
+                    val updatedUser = userService.addFavourite(userId, recipe)
+
+                    if (updatedUser != null) {
+                        call.respond(HttpStatusCode.OK, updatedUser.favourites)
+                    }
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "User not found.")
+                }
+            }
+
+            post("/favourites/{recipeId}") {
+                val principal = call.principal<JWTPrincipal>()
+                val userId = principal?.getClaim("userId", String::class)?.toLong()
+
                 val recipeId = call.parameters["recipeId"]?.toLongOrNull()
                     ?: return@post call.respond(HttpStatusCode.BadRequest)
 
-                val recipe = recipeService.findById(id)
+                if (recipeId != null) {
+                    val recipe = recipeService.findById(recipeId)
 
-                if (recipe != null) {
-                    val updatedUser = userService.addFavourite(id, recipe)
-                    if (updatedUser != null) {
-                        call.respond(HttpStatusCode.OK, updatedUser.favourites)
-                    } else {
-                        call.respond(HttpStatusCode.NotFound)
+                    if (recipe != null && userId != null) {
+                        val updatedUser = userService.addFavourite(userId, recipe)
+                        if (updatedUser != null) {
+                            call.respond(HttpStatusCode.OK, updatedUser.favourites)
+                        } else {
+                            call.respond(HttpStatusCode.Forbidden)
+                        }
                     }
                 } else {
-                    call.respond(HttpStatusCode.NotFound)
+                    call.respond(HttpStatusCode.NotFound, "recipe id: $recipeId")
                 }
+
             }
 
 //            delete("/{id}/favourites") {
