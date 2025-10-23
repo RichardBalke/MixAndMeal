@@ -19,14 +19,14 @@ import routes.signIn
 import responses.AuthResponse
 import requests.AuthRequest
 import service.UserService
-import service.TokenService
 import models.TokenConfig
+import service.JwtService
 import kotlin.test.assertEquals
 
 class AuthRoutesTest {
 
     private val mockUserService = mockk<UserService>()
-    private val mockTokenService = mockk<TokenService>()
+    private val mockTokenService = mockk<JwtService>()
     private val tokenConfig = TokenConfig("issuer", "audience", 3600, "secret")
 
     @Test

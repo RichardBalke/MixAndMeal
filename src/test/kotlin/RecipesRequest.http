@@ -1,6 +1,9 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzA3MDUwLCJ1c2VySWQiOiIxIn0.6tcBWYFRzOvH2-OOpNAqcn8nRfS5NMduQbnStUXYRCI
+
 ### Create a new recipe
 POST http://localhost:8080/recipes
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "title": "Spicy Lentil Soup",
@@ -127,7 +130,7 @@ Authorization: Bearer {{token}}
   ]
 }
 
-//GET http://localhost:8080/favourites/userid
+
 ### get favorites list from user
 GET http://localhost:8080/favourites/userid
 Content-Type: application/json
