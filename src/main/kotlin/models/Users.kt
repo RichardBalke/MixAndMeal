@@ -10,7 +10,7 @@ data class User(
 //    val locationSettings: LocationSettings(), wordt toegevoegd bij implementatie app
     val role: Role = Role.USER,
     val favourites: MutableList<Recipes> = mutableListOf<Recipes>(),
-//    val fridge: List<Ingredients> = emptyList(), wordt toegevoegd bij implementatie app
+    val fridge: MutableList<Ingredients> = mutableListOf<Ingredients>(),
     val allergens: MutableList<Allergens> = mutableListOf<Allergens>(),
     val id: Long = NEW_USER_ID
 ) {

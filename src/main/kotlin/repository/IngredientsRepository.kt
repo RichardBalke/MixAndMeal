@@ -19,7 +19,7 @@ object FakeIngredientsRepository {
         runBlocking {
             service.create(Ingredients("Apple", "A red apple"))
             service.create(Ingredients("Sugar", "A sweet substance"))
-            service.create(Ingredients("Peanut", "A tasty nut", listOf(Allergens.PEANUTS)))
+            service.create(Ingredients("Peanut", "A tasty nut", listOf(Allergens(5, "PEANUTS", "Pinda’s", "Kan ernstige allergische reacties veroorzaken"))))
             service.create(Ingredients("Lentils", "Hearty and protein-rich lentils"))
             service.create(Ingredients("Tomatoes", "Fresh ripe tomatoes"))
             service.create(Ingredients("Spices", "A mix of Indian spices"))

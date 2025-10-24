@@ -1,6 +1,6 @@
 #Replace token with new token
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzEyMDk2LCJ1c2VySWQiOiIyIn0.vIF4fgMjnvZnr099zsn0Aj0GM2idiwS6GD8oUGOoxsw
-@token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMTM1NDExLCJ1c2VySWQiOiIyIn0.W9qOAyRSFRKCAl1BtMNx9mkDScgsxuUqJKjUmEtFwh0
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzk5NDQ3LCJ1c2VySWQiOiIxIn0.ZQ6VpKwjDewy9XTIFd8sIDWsaaW3BPkTeyxt3W_8Slg
+@token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzk4NjY4LCJ1c2VySWQiOiIyIn0.0Js7xIPcglS40m_s6lRpE1hDSXC5_jW9kGiAqNXlQ4A
 ###
 GET http://127.0.0.1:8080/users
 Content-Type: application/json
@@ -61,17 +61,17 @@ Authorization: Bearer {{token}}
 ###
 
 ### get favorites list from user
-GET http://127.0.0.1:8080/users/favourites/1
+GET http://127.0.0.1:8080/users/favourites
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### post favorite item to user
-POST http://127.0.0.1:8080/users/favo
+POST http://127.0.0.1:8080/users/favourites
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-[
-  {
+
+{
   "id": 1,
   "title": "Creamy Mushroom Risotto",
   "description": "A rich and creamy risotto with earthy mushrooms and parmesan.",
@@ -108,43 +108,37 @@ Authorization: Bearer {{token}}
       "unitType": "GRAMS"
     }
   ]
-},
-{
-"id": 2,
-"title": "Creamy Mushroom Risotto",
-"description": "A rich and creamy risotto with earthy mushrooms and parmesan.",
-"prepTime": 15,
-"cookingTime": 300,
-"difficulty": "MEDIUM",
-"image": "https://example.com/images/risotto.jpg",
-"mealType": "DINNER",
-"kitchenStyle": "ITALIAN",
-"diets": [
-"VEGAN"
-],
-"ingredients": [
-{
-"ingredient": {
-"name": "Sugar",
-"description": "A sweet substance",
-"allergens": [],
-"id": 2
-},
-"amount": 50.0,
-"unitType": "GRAMS"
-},
-{
-"ingredient": {
-"name": "Peanut",
-"description": "A tasty nut",
-"allergens": [
-"PEANUTS"
-],
-"id": 3
-},
-"amount": 10.0,
-"unitType": "GRAMS"
 }
-]
-}]
 ###
+GET http://127.0.0.1:8080/users/fridge
+Content-Type: application/json
+Authorization: Bearer {{token2}}
+
+### post favorite item to user
+POST http://127.0.0.1:8080/users/fridge
+Content-Type: application/json
+Authorization: Bearer {{token2}}
+
+{
+  "id": 2,
+  "name": "Sugar",
+  "description": "Refined sweetener",
+  "allergens": ["SULPHITES"]
+}
+
+###
+GET http://127.0.0.1:8080/users/allergens
+Content-Type: application/json
+Authorization: Bearer {{token2}}
+
+### post favorite item to user
+POST http://127.0.0.1:8080/users/allergens
+Content-Type: application/json
+Authorization: Bearer {{token2}}
+
+{
+  "id": 1,
+  "name": "GLUTEN",
+  "displayName": "Glutenbevattende granen",
+  "description": "Bevat gluten uit tarwe, rogge, gerst, haver, spelt of kamut"
+}
