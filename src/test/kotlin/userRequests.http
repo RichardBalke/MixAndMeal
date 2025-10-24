@@ -1,19 +1,20 @@
 #Replace token with new token
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzk5NDQ3LCJ1c2VySWQiOiIxIn0.ZQ6VpKwjDewy9XTIFd8sIDWsaaW3BPkTeyxt3W_8Slg
 @token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzk4NjY4LCJ1c2VySWQiOiIyIn0.0Js7xIPcglS40m_s6lRpE1hDSXC5_jW9kGiAqNXlQ4A
-###
+
+### get all users
 GET http://127.0.0.1:8080/users
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
-###
+### get user with userId 4
 GET http://127.0.0.1:8080/users/4
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
-###
+### sign in as a user with an admin role
 POST http://127.0.0.1:8080/signin
 Content-Type: application/json
 
@@ -24,7 +25,7 @@ Content-Type: application/json
 }
 ###
 
-###
+### sign in as a user with a user role
 POST http://127.0.0.1:8080/signin
 Content-Type: application/json
 
@@ -35,7 +36,7 @@ Content-Type: application/json
 }
 ###
 
-###
+### Signup as a new user
 POST http://127.0.0.1:8080/signup
 Content-Type: application/json
 
@@ -47,14 +48,13 @@ Content-Type: application/json
 }
 ###
 
-###
+### check authorization with token
 GET http://127.0.0.1:8080/authenticate
 Content-Type: application/json
 Authorization: Bearer {{token}}
-
 ###
 
-###
+### get userid in string for signed in user
 GET http://127.0.0.1:8080/secret
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -65,11 +65,10 @@ GET http://127.0.0.1:8080/users/favourites
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### post favorite item to user
+### add or remove a recipe from the favorites list
 POST http://127.0.0.1:8080/users/favourites
 Content-Type: application/json
 Authorization: Bearer {{token}}
-
 
 {
   "id": 1,
@@ -110,6 +109,8 @@ Authorization: Bearer {{token}}
   ]
 }
 ###
+
+### get the list of ingredients from your "fridge"
 GET http://127.0.0.1:8080/users/fridge
 Content-Type: application/json
 Authorization: Bearer {{token2}}
@@ -126,12 +127,12 @@ Authorization: Bearer {{token2}}
   "allergens": ["SULPHITES"]
 }
 
-###
+### get the list of allergens for signed in user
 GET http://127.0.0.1:8080/users/allergens
 Content-Type: application/json
 Authorization: Bearer {{token2}}
 
-### post favorite item to user
+### post add or remove allergen for signed in user
 POST http://127.0.0.1:8080/users/allergens
 Content-Type: application/json
 Authorization: Bearer {{token2}}

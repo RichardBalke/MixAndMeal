@@ -1,0 +1,58 @@
+@token = PUT_TOKEN_HERE_TO_TEST
+
+### Signin as a user - put return token on top
+POST http://127.0.0.1:8080/signin
+Content-Type: application/json
+
+{
+  "username": "Henk",
+  "email": "henk@example.com",
+  "password": "verysecretpassword"
+}
+###
+
+### add or remove a recipe from the favorites list
+POST http://127.0.0.1:8080/users/favourites
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 1,
+  "title": "Creamy Mushroom Risotto",
+  "description": "A rich and creamy risotto with earthy mushrooms and parmesan.",
+  "prepTime": 15,
+  "cookingTime": 300,
+  "difficulty": "MEDIUM",
+  "image": "https://example.com/images/risotto.jpg",
+  "mealType": "DINNER",
+  "kitchenStyle": "ITALIAN",
+  "diets": [
+    "VEGAN"
+  ],
+  "ingredients": [
+    {
+      "ingredient": {
+        "name": "Sugar",
+        "description": "A sweet substance",
+        "allergens": [],
+        "id": 2
+      },
+      "amount": 50.0,
+      "unitType": "GRAMS"
+    },
+    {
+      "ingredient": {
+        "name": "Peanut",
+        "description": "A tasty nut",
+        "allergens": [
+          "PEANUTS"
+        ],
+        "id": 3
+      },
+      "amount": 10.0,
+      "unitType": "GRAMS"
+    }
+  ]
+}
+###
+

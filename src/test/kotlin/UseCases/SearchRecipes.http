@@ -21,8 +21,8 @@ POST http://localhost:8080/recipes/ingredient
 Content-Type: application/json
 
 {
-    "name": "Lentils",
-    "description": "Hearty and protein-rich lentils",
-    "allergens": [],
-    "id": 4
+  "name": "Sugar",
+  "description": "A sweet substance",
+  "allergens": [],
+  "id": 2
 }
