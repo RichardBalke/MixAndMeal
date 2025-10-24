@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzA3MDUwLCJ1c2VySWQiOiIxIn0.6tcBWYFRzOvH2-OOpNAqcn8nRfS5NMduQbnStUXYRCI
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxNDIyMTc0LCJ1c2VySWQiOiIxIn0.nN4MNonUl1kzdHrrqHZqQDNib4fMMX7sFJEOhoIlZ14
 
 ### Create a new recipe
 POST http://localhost:8080/recipes

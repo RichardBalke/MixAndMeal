@@ -1,0 +1,28 @@
+### Get all recipes
+GET http://localhost:8080/recipes
+
+### Find recipe by title
+GET http://localhost:8080/recipes/title/risotto
+
+### Find recipes by difficulty
+GET http://localhost:8080/recipes/difficulty/medium
+
+### Find recipes by meal type
+GET http://localhost:8080/recipes/mealtype/dinner
+
+### Find recipes by diet
+GET http://localhost:8080/recipes/diets/veganistisch
+
+### Find recipes by kitchen style
+GET http://localhost:8080/recipes/kitchen/italian
+
+### Find recipes by Ingredient names
+POST http://localhost:8080/recipes/ingredient
+Content-Type: application/json
+
+{
+    "name": "Lentils",
+    "description": "Hearty and protein-rich lentils",
+    "allergens": [],
+    "id": 4
+}

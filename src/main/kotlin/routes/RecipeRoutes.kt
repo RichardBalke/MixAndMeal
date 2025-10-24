@@ -4,6 +4,7 @@ import api.models.Diets
 import api.models.Ingredients
 import api.models.Recipes
 import api.repository.FakeRecipeRepository
+import api.repository.FakeRecipeRepository.recipes
 import api.repository.RecipesRepository
 import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.http.HttpStatusCode
@@ -189,6 +190,27 @@ fun Route.recipesRoutes(repository: RecipeService) {
                     call.respond(HttpStatusCode.Unauthorized)
                 }
 
+            }
+
+        }
+        post("/ingredient"){
+            val ingredient = call.receive<Ingredients>()
+
+            val foundRecipes = mutableListOf<Recipes>()
+
+            for (recipe in recipes) {
+                for(ingredientUnit in recipe.ingredients) {
+                    if(ingredientUnit.ingredient.name == ingredient.name){
+                        foundRecipes.add(recipe)
+                    }
+                }
+            }
+
+            if(foundRecipes.isNotEmpty()) {
+                call.respond(HttpStatusCode.OK, foundRecipes)
+            }
+            else{
+                call.respond(HttpStatusCode.NotFound)
             }
 
         }
