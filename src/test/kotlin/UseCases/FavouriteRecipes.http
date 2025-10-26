@@ -11,6 +11,11 @@ Content-Type: application/json
 }
 ###
 
+### get favorites list from user
+GET http://127.0.0.1:8080/users/favourites
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 ### add or remove a recipe from the favorites list
 POST http://127.0.0.1:8080/users/favourites
 Content-Type: application/json
@@ -55,4 +60,9 @@ Authorization: Bearer {{token}}
   ]
 }
 ###
+
+### get favorites list from user
+GET http://127.0.0.1:8080/users/favourites
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
