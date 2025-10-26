@@ -37,6 +37,10 @@ fun Route.signUp(tempUser : UserService){
             return@post
         }
 
+        if (tempUser.findByEmail(request.email) != null){
+            call.respond(HttpStatusCode.Conflict, "User already exists.")
+        }
+
         val user = User(
             name = request.username,
             password = request.password,

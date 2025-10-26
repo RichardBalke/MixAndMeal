@@ -32,14 +32,14 @@ object FakeRecipeRepository {
 
            recipeService.create(
                 Recipes(
-                    title = "Creamy Mushroom Risotto",
-                    description = "A rich and creamy risotto with earthy mushrooms and parmesan.",
+                    title = "Creamy Mushroom Soup",
+                    description = "A rich and creamy Soup with earthy mushrooms and parmesan.",
                     prepTime = 15,
                     cookingTime = 300,
-                    difficulty = Difficulty.MEDIUM,
-                    image = "https://example.com/images/risotto.jpg",
+                    difficulty = Difficulty.EASY,
+                    image = "https://example.com/images/Soup.jpg",
                     mealType = MealType.DINNER,
-                    kitchenStyle = KitchenStyle.ITALIAN,
+                    kitchenStyle = KitchenStyle.MEDITERRANEAN,
                     diets = listOf(Diets.VEGAN),
                     ingredients = listOf<IngredientUnits>(
                         list[1],
@@ -61,15 +61,15 @@ object FakeRecipeRepository {
                     diets = listOf(Diets.VEGAN),
                     ingredients = listOf<IngredientUnits>(
                         list[1],
-                        list[2]
+                        list[4]
                     )
                 )
             )
 
             recipeService.create(
                 Recipes(
-                    title = "Creamy Mushroom Risotto",
-                    description = "A rich and creamy risotto with earthy mushrooms and parmesan.",
+                    title = "Hotchpotch",
+                    description = "A rich and creamy Hotchpotch with earthy mushrooms and parmesan.",
                     prepTime = 15,
                     cookingTime = 300,
                     difficulty = Difficulty.MEDIUM,
@@ -78,8 +78,8 @@ object FakeRecipeRepository {
                     kitchenStyle = KitchenStyle.ITALIAN,
                     diets = listOf(Diets.VEGAN),
                     ingredients = listOf<IngredientUnits>(
-                        list[1],
-                        list[2]
+                        list[5],
+                        list[3]
                     )
                 )
             )

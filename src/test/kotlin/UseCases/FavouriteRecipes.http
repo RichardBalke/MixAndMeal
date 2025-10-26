@@ -9,6 +9,7 @@ Content-Type: application/json
   "email": "henk@example.com",
   "password": "verysecretpassword"
 }
+
 ###
 
 ### get favorites list from user
@@ -22,7 +23,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 1,
+  "id": 2,
   "title": "Creamy Mushroom Risotto",
   "description": "A rich and creamy risotto with earthy mushrooms and parmesan.",
   "prepTime": 15,
@@ -47,22 +48,13 @@ Authorization: Bearer {{token}}
     },
     {
       "ingredient": {
-        "name": "Peanut",
-        "description": "A tasty nut",
-        "allergens": [
-          "PEANUTS"
-        ],
-        "id": 3
+        "name": "Tomatoes",
+        "description": "Fresh ripe tomatoes",
+        "allergens": [],
+        "id": 5
       },
-      "amount": 10.0,
+      "amount": 3.0,
       "unitType": "GRAMS"
     }
   ]
 }
-###
-
-### get favorites list from user
-GET http://127.0.0.1:8080/users/favourites
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
