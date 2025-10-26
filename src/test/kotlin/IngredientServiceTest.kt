@@ -43,7 +43,8 @@ class IngredientServiceTest {
 
     @Test
     fun `findByName returns ingredient`() = runBlocking {
-        val created = ingredientService.create(Ingredients("Peanut", "Nut", listOf(Allergens.PEANUTS)))
+        val peanutAllergen = Allergens(5, "PEANUTS", "Peanut", "May cause severe allergic reactions")
+        val created = ingredientService.create(Ingredients("Peanut", "Nut", listOf(peanutAllergen)))
 
         val found = ingredientService.findByName("Peanut")
 
@@ -65,7 +66,7 @@ class IngredientServiceTest {
     @Test
     fun `updateAllergens updates allergens for existing ingredient`() = runBlocking {
         val created = ingredientService.create(Ingredients("Milk", "Dairy"))
-        val newAllergens = listOf(Allergens.MILK)
+        val newAllergens = listOf(Allergens(1, "MILK", "Milk", "Contains milk proteins"))
 
         val updated = ingredientService.updateAllergens(created, newAllergens)
 
@@ -80,7 +81,7 @@ class IngredientServiceTest {
         val ing = Ingredients("Sesame", "Seed") // id == 0
 
         val ex = assertThrows(IllegalStateException::class.java) {
-            runBlocking { ingredientService.updateAllergens(ing, listOf(Allergens.SESAME)) }
+            runBlocking { ingredientService.updateAllergens(ing, listOf(Allergens(3, "SESAME", "Sesame", "Sesame seeds"))) }
         }
         assertTrue(ex.message?.contains("ID must be greater than 0") == true)
     }
@@ -91,7 +92,7 @@ class IngredientServiceTest {
         val nonExisting = created.copy(id = 999) // ensure ID does not exist in repo
 
         val ex = assertThrows(IllegalArgumentException::class.java) {
-            runBlocking { ingredientService.updateAllergens(nonExisting, listOf(Allergens.SOY)) }
+            runBlocking { ingredientService.updateAllergens(nonExisting, listOf(Allergens(7, "SOY", "Soy", "Contains soy"))) }
         }
         assertTrue(ex.message?.contains("Ingredient with ID 999 not found") == true)
     }
