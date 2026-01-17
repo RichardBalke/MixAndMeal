@@ -26,17 +26,17 @@ import org.koin.core.component.getScopeName
 import requests.RecipeSearchRequest
 
 interface RecipesRepository : CrudRepository<RecipeEntry, Int>{
-    suspend fun findByTitle(title: String): List<RecipeEntry>
-    suspend fun findByDifficulty(difficulty: String): List<RecipeEntry>
-    suspend fun findByMealType(mealType: String): List<RecipeEntry>
-    suspend fun findByDiets(diets: String): List<RecipeEntry>
-    suspend fun findByKitchenStyle(kitchenStyle: String): List<RecipeEntry>
+//    suspend fun findByTitle(title: String): List<RecipeEntry>
+//    suspend fun findByDifficulty(difficulty: String): List<RecipeEntry>
+//    suspend fun findByMealType(mealType: String): List<RecipeEntry>
+//    suspend fun findByDiets(diets: String): List<RecipeEntry>
+//    suspend fun findByKitchenStyle(kitchenStyle: String): List<RecipeEntry>
     suspend fun findByRecipeId(recipeId: Int): RecipeEntry?
     suspend fun findPopularRecipes(limit: Int): List<RecipeCardResponse>
     suspend fun findRecipeCardsByDifficulty(limit: Int, difficulty: String): List<RecipeCardResponse>
     suspend fun findQuickRecipes(limit: Int): List<RecipeCardResponse>
     suspend fun findFavoriteRecipes(recipeIds: List<UserFavouritesEntry>): List<RecipeCardResponse>
-    suspend fun findAllRecipesAsRecipeCards(): List<RecipeCardResponse>
+//    suspend fun findAllRecipesAsRecipeCards(): List<RecipeCardResponse>
     suspend fun searchRecipes(recipeSearchRequest: RecipeSearchRequest) : Set<RecipeCardResponse>
 }
 
@@ -75,44 +75,42 @@ class RecipesRepositoryImpl : RecipesRepository, CrudImplementation<RecipeEntry,
         stmt[Recipes.favoritesCount] = recipe.favoritesCount
     }){
 
-    override suspend fun findByTitle(title: String): List<RecipeEntry>  = transaction {
-        Recipes.selectAll()
-            .where { Recipes.title like title }
-            .mapNotNull(toEntity)
-            .toList()
-    }
+//    override suspend fun findByTitle(title: String): List<RecipeEntry>  = transaction {
+//        Recipes.selectAll()
+//            .where { Recipes.title like title }
+//            .mapNotNull(toEntity)
+//            .toList()
+//    }
 
-    override suspend fun findByDifficulty(difficulty: String): List<RecipeEntry> = transaction{
-        Recipes.selectAll()
-            .where(Recipes.difficulty eq difficulty)
-            .mapNotNull(toEntity)
-            .toList()
-    }
+//    override suspend fun findByDifficulty(difficulty: String): List<RecipeEntry> = transaction{
+//        Recipes.selectAll()
+//            .where(Recipes.difficulty eq difficulty)
+//            .mapNotNull(toEntity)
+//            .toList()
+//    }
 
-    override suspend fun findByMealType(mealType: String): List<RecipeEntry> = transaction {
-        Recipes.selectAll()
-            .where(Recipes.mealType eq mealType)
-            .mapNotNull(toEntity)
-            .toList()
-    }
+//    override suspend fun findByMealType(mealType: String): List<RecipeEntry> = transaction {
+//        Recipes.selectAll()
+//            .where(Recipes.mealType eq mealType)
+//            .mapNotNull(toEntity)
+//            .toList()
+//    }
 
 
-    // Deze functie moet goed getest worden. Als dit werkt kunnen we op deze manier ook andere queries doen!!!
-    // !!!
-    override suspend fun findByDiets(diets: String): List<RecipeEntry> = transaction {
-        (Recipes innerJoin RecipeDiets innerJoin Diets)
-            .selectAll()
-            .where(Diets.displayName eq diets)
-            .mapNotNull(toEntity)
-            .toList()
-    }
+//    override suspend fun findByDiets(diets: String): List<RecipeEntry> = transaction {
+//        (Recipes innerJoin RecipeDiets innerJoin Diets)
+//            .selectAll()
+//            .where(Diets.displayName eq diets)
+//            .mapNotNull(toEntity)
+//            .toList()
+//    }
 
-    override suspend fun findByKitchenStyle(kitchenStyle: String): List<RecipeEntry> = transaction {
-        Recipes.selectAll()
-            .where(Recipes.kitchenStyle eq kitchenStyle)
-            .mapNotNull(toEntity)
-            .toList()
-    }
+//    override suspend fun findByKitchenStyle(kitchenStyle: String): List<RecipeEntry> = transaction {
+//        Recipes.selectAll()
+//            .where(Recipes.kitchenStyle eq kitchenStyle)
+//            .mapNotNull(toEntity)
+//            .toList()
+//    }
 
     override suspend fun findByRecipeId(recipeId: Int): RecipeEntry? = transaction {
         table.selectAll()
@@ -121,18 +119,18 @@ class RecipesRepositoryImpl : RecipesRepository, CrudImplementation<RecipeEntry,
             .firstOrNull()
     }
 
-    override suspend fun findAllRecipesAsRecipeCards(): List<RecipeCardResponse> = transaction {
-        table.select(Recipes.id, Recipes.title, Recipes.description, Recipes.cookingTime)
-            .map {RecipeCardResponse(
-                recipeId = it[Recipes.id],
-                it[Recipes.title],
-                it[Recipes.description],
-                it[Recipes.cookingTime],
-                mutableListOf()
-            )
-            }
-            .toList()
-    }
+//    override suspend fun findAllRecipesAsRecipeCards(): List<RecipeCardResponse> = transaction {
+//        table.select(Recipes.id, Recipes.title, Recipes.description, Recipes.cookingTime)
+//            .map {RecipeCardResponse(
+//                recipeId = it[Recipes.id],
+//                it[Recipes.title],
+//                it[Recipes.description],
+//                it[Recipes.cookingTime],
+//                mutableListOf()
+//            )
+//            }
+//            .toList()
+//    }
 
     override suspend fun findPopularRecipes(limit: Int): List<RecipeCardResponse> = transaction {
         table.select(Recipes.id, Recipes.title, Recipes.description, Recipes.cookingTime, Recipes.favoritesCount)

@@ -1,5 +1,6 @@
 package routes
 
+import api.requests.DietsIDRequest
 import api.requests.RecipeIDRequest
 import api.responses.RecipeCardResponse
 import io.ktor.server.application.*
@@ -49,19 +50,24 @@ fun Route.userDietsRoutes() {
                 val principal = call.principal<JWTPrincipal>()
                 val userId = principal?.getClaim("userId", String::class)!!
 
-                val dietId = call.receive<DietEntry>()
+                val dietId = call.receive<DietsIDRequest>()
 
                 try {
-                    val entry = userDietsService.addUserDietEntry(
-                        UserDietEntry(userId = userId, dietId = dietId.id)
-                    )
-                    val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
-                    val diets = mutableListOf<DietEntry?>()
+                    val diet = dietsService.getDietsByDisplayName(dietId.displayName)
+                    if (diet != null) {
+                        val entry = userDietsService.addUserDietEntry(
+                            UserDietEntry(userId = userId, dietId = diet.id)
+                        )
+                        val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
+                        val diets = mutableListOf<DietEntry?>()
 
-                    if (userDiets.isNotEmpty()) {
-                        diets.addAll(userDietsService.getDietsFromEntries(userDiets, dietsService))
+                        if (userDiets.isNotEmpty()) {
+                            diets.addAll(userDietsService.getDietsFromEntries(userDiets, dietsService))
+                        }
+                        call.respond(HttpStatusCode.Created, diets)
+                    }else{
+                        call.respond(HttpStatusCode.NotFound)
                     }
-                    call.respond(HttpStatusCode.Created, diets)
 
                 } catch (e: Exception) {
                     val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
@@ -78,16 +84,22 @@ fun Route.userDietsRoutes() {
                 val principal = call.principal<JWTPrincipal>()
                 val userId = principal?.getClaim("userId", String::class)!!
 
-                val dietId = call.receive<DietEntry>()
+                val dietId = call.receive<DietsIDRequest>()
 
-                userDietsService.removeUserDietEntry(userId, dietId.id)
-                val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
-                val diets = mutableListOf<DietEntry?>()
+                val diet = dietsService.getDietsByDisplayName(dietId.displayName)
+                if (diet != null) {
+                    userDietsService.removeUserDietEntry(userId, diet.id)
+                    val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
+                    val diets = mutableListOf<DietEntry?>()
 
-                if (userDiets.isNotEmpty()) {
-                    diets.addAll(userDietsService.getDietsFromEntries(userDiets, dietsService))
+                    if (userDiets.isNotEmpty()) {
+                        diets.addAll(userDietsService.getDietsFromEntries(userDiets, dietsService))
+                    }
+                    call.respond(HttpStatusCode.OK, diets)
                 }
-                call.respond(HttpStatusCode.OK, diets)
+                else{
+                    call.respond(HttpStatusCode.NotFound)
+                }
             }
         }
     }

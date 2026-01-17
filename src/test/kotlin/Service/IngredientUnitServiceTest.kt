@@ -1,24 +1,24 @@
-//package service.Service
-//
-//import api.repository.IngredientUnitRepositoryImpl
-//import io.mockk.*
-//import kotlinx.coroutines.runBlocking
-//import models.dto.IngredientUnitEntry
-//import org.junit.jupiter.api.BeforeEach
-//import org.junit.jupiter.api.Test
-//import org.junit.jupiter.api.Assertions.*
-//import service.IngredientUnitService
-//
-//class IngredientUnitServiceTest {
-//
-//    private lateinit var ingredientRepo: IngredientUnitRepositoryImpl
-//    private lateinit var ingredientService: IngredientUnitService
-//
-//    @BeforeEach
-//    fun setup() {
-//        ingredientRepo = mockk()
-//        ingredientService = IngredientUnitService(ingredientRepo)
-//    }
+package service.Service
+
+import api.repository.IngredientUnitRepositoryImpl
+import io.mockk.*
+import kotlinx.coroutines.runBlocking
+import models.dto.IngredientUnitEntry
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.*
+import service.IngredientUnitService
+
+class IngredientUnitServiceTest {
+
+    private lateinit var ingredientRepo: IngredientUnitRepositoryImpl
+    private lateinit var ingredientService: IngredientUnitService
+
+    @BeforeEach
+    fun setup() {
+        ingredientRepo = mockk()
+        ingredientService = IngredientUnitService(ingredientRepo)
+    }
 
 //    @Test
 //    fun `getIngredientsByRecipeId returns list`() = runBlocking {
@@ -40,18 +40,18 @@
 //        coVerify { ingredientRepo.findAllByRecipeId(1) }
 //    }
 
-//    @Test
-//    fun `addIngredientUnit calls repository`() = runBlocking {
-//        val ingredient = IngredientUnitEntry(1,
-//            "Potato",
-//            100.0,
-//            "gr")
-//
-//        ingredientRepo = mockkClass(IngredientUnitRepositoryImpl::class, relaxed = true)
-//        coEvery { ingredientRepo.create(ingredient) } just Runs
-//
-//        ingredientService.addIngredientUnit(ingredient)
-//
-//        coVerify { ingredientRepo.create(ingredient) }
-//    }
-//}
+    @Test
+    fun `addIngredientUnit calls repository`() = runBlocking {
+        val ingredient = IngredientUnitEntry(1,
+            "Potato",
+            100.0,
+            "gr")
+
+        ingredientRepo = mockkClass(IngredientUnitRepositoryImpl::class, relaxed = true)
+        coEvery { ingredientRepo.create(ingredient) } just Awaits
+
+        ingredientService.addIngredientUnit(ingredient)
+
+        coVerify { ingredientRepo.create(ingredient) }
+    }
+}

@@ -12,9 +12,11 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
 import org.koin.ktor.ext.inject
+import service.AllergenService
 
 fun Route.userAllergensRoutes() {
     val userAllergensService by inject<UserAllergensService>()
+    val allergensService by inject<AllergenService>()
 
     authenticate {
         route("/allergens") {
@@ -36,9 +38,15 @@ fun Route.userAllergensRoutes() {
                 val request = call.receive<AllergenIDRequest>()
 
                 try {
-                    userAllergensService.addUserAllergenEntry(userId, request.allergenId)
-                    val allergens = userAllergensService.getUserAllergenEntries(userId)
-                    call.respond(HttpStatusCode.Created, allergens)
+                    val allergen = allergensService.getAllergenByDisplayName(request.displayName)
+                    if (allergen == null) {
+                        call.respond(HttpStatusCode.NotFound)
+                    }else {
+
+                        userAllergensService.addUserAllergenEntry(userId, allergen.id)
+                        val allergens = userAllergensService.getUserAllergenEntries(userId)
+                        call.respond(HttpStatusCode.Created, allergens)
+                    }
                 } catch (e: Exception) {
                     val allergens = userAllergensService.getUserAllergenEntries(userId)
                     call.respond(HttpStatusCode.Conflict, allergens)
@@ -51,11 +59,15 @@ fun Route.userAllergensRoutes() {
                 val userId = principal?.getClaim("userId", String::class)!!
 
                 val request = call.receive<AllergenIDRequest>()
+                val allergen = allergensService.getAllergenByDisplayName(request.displayName)
+                if (allergen == null) {
+                    call.respond(HttpStatusCode.NotFound)
+                }else {
+                    userAllergensService.removeUserAllergenEntry(userId, allergen.id)
 
-                userAllergensService.removeUserAllergenEntry(userId, request.allergenId)
-
-                val allergens = userAllergensService.getUserAllergenEntries(userId)
-                call.respond(HttpStatusCode.OK, allergens)
+                    val allergens = userAllergensService.getUserAllergenEntries(userId)
+                    call.respond(HttpStatusCode.OK, allergens)
+                }
             }
         }
     }

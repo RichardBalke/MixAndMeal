@@ -57,29 +57,26 @@ class UserDietsServiceTest {
         coVerify { dietsRepository.removeDiet("1", 101) }
     }
 
-//    *** Deze test faalt omdat mockk niet goed werkt met de coEvery calls binnen de getDietsFromEntries functie.
-//    Dit is een hardcoded repository; hiervoor is een integratietest nodig ***
-//
-//    @Test
-//    fun `getDietsFromEntries returns list of DietEntry`() = runBlocking {
-//        val entries = listOf(
-//            UserDietEntry(userId = "1", dietId = 201),
-//            UserDietEntry(userId = "1", dietId = 202)
-//        )
-//
-//        val dietsServiceMock = mockk<DietsService>()
-//        coEvery { dietsServiceMock.getDietById(201) } returns DietEntry(201, "Keto", "High fat, low carb")
-//        coEvery { dietsServiceMock.getDietById(202) } returns DietEntry(202, "Vegan", "Plant-based diet")
-//
-//        val result = dietsService.getDietsFromEntries(entries, dietsServiceMock)
-//
-//        assertEquals(2, result.size)
-//        assertEquals("Keto", result[0].displayName)
-//        assertEquals("High fat, low carb", result[0].description)
-//        assertEquals("Vegan", result[1].displayName)
-//        assertEquals("Plant-based diet", result[1].description)
-//
-//        coVerify { dietsServiceMock.getDietById(201) }
-//        coVerify { dietsServiceMock.getDietById(202) }
-//    }
+    @Test
+    fun `getDietsFromEntries returns list of DietEntry`() = runBlocking {
+        val entries = listOf(
+            UserDietEntry(userId = "1", dietId = 201),
+            UserDietEntry(userId = "1", dietId = 202)
+        )
+
+        val dietsServiceMock = mockk<DietsService>()
+        coEvery { dietsServiceMock.getDietById(201) } returns DietEntry(201, "Keto", "High fat, low carb")
+        coEvery { dietsServiceMock.getDietById(202) } returns DietEntry(202, "Vegan", "Plant-based diet")
+
+        val result = dietsService.getDietsFromEntries(entries, dietsServiceMock)
+
+        assertEquals(2, result.size)
+        assertEquals("Keto", result[0]!!.displayName)
+        assertEquals("High fat, low carb", result[0]!!.description)
+        assertEquals("Vegan", result[1]!!.displayName)
+        assertEquals("Plant-based diet", result[1]!!.description)
+
+        coVerify { dietsServiceMock.getDietById(201) }
+        coVerify { dietsServiceMock.getDietById(202) }
+    }
 }

@@ -7,4 +7,8 @@ class DietsService(private val dietsRepository: DietsRepositoryImpl) {
     suspend fun getDietById(id: Int) : DietEntry? {
         return dietsRepository.findByDietId(id)
     }
+
+    suspend fun getDietsByDisplayName(displayName: String) : DietEntry? {
+        return dietsRepository.findByDisplayName(displayName)
+    }
 }
