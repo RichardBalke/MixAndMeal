@@ -1,6 +1,7 @@
 package api.routes
 
 import api.requests.IngredientIDRequest
+import api.service.IngredientService
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.request.*
@@ -16,6 +17,7 @@ import org.koin.ktor.ext.inject
 
 fun Route.userFridgeRoutes() {
     val userFridgeService by inject<UserFridgeService>()
+    val ingredientService by inject<IngredientService>()
     authenticate {
         route("/fridge") {
             get() {
@@ -32,7 +34,10 @@ fun Route.userFridgeRoutes() {
                 val userId = principal?.getClaim("userId", String::class)!!
 
                 val ingredient = call.receive<IngredientIDRequest>()
-                println(ingredient)
+                val ingredientExists = ingredientService.getIngredientsByName(ingredient.ingredientName)
+                if(ingredientExists == null){
+                    call.respond(HttpStatusCode.NotFound)
+                }
                 try {
                     userFridgeService.addUserFridgeEntry(
                         UserFridgeEntry(userId = userId, ingredientName = ingredient.ingredientName)

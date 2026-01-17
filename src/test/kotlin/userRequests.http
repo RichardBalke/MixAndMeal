@@ -1,5 +1,5 @@
 #Replace token with new token
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzY4MjE4NzAzLCJ1c2VySWQiOiJhbGljZUBleGFtcGxlLmNvbSIsInVzZXJOYW1lIjoiQWxpY2UgSm9obnNvbiJ9.Ztx4jHgWPFFlU-xJOGACjJADnWhgIe-_wJ2qW_ZmoJw
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzY4Nzc1MDM0LCJ1c2VySWQiOiJhbGljZUBleGFtcGxlLmNvbSIsInVzZXJOYW1lIjoiQWxpY2UgSm9obnNvbiJ9.rkx0LCk27xINvzaKf9cHhYopUlyNjT3oNsgx-LwF0xg
 @token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VycyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNzYxMzk4NjY4LCJ1c2VySWQiOiIyIn0.0Js7xIPcglS40m_s6lRpE1hDSXC5_jW9kGiAqNXlQ4A
 
 ### get all users
@@ -194,9 +194,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 1,
-  "displayName": "Veganistisch",
-  "description": "Geen dierlijke producten."
+  "displayName": "Veganistisch"
 }
 
 ###
@@ -205,9 +203,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 1,
   "displayName": "Veganistisch",
-  "description": "Geen dierlijke producten."
 }
 
 ###

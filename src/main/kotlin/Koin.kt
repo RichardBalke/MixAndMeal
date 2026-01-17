@@ -2,10 +2,13 @@ package api
 
 import api.repository.IngredientUnitRepository
 import api.repository.IngredientUnitRepositoryImpl
+import api.repository.IngredientsRepository
+import api.repository.IngredientsRepositoryImpl
 import api.repository.RecipesRepository
 import api.repository.RecipesRepositoryImpl
 import api.repository.UserRepository
 import api.repository.UserRepositoryImpl
+import api.service.IngredientService
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import org.koin.core.module.dsl.singleOf
@@ -80,6 +83,8 @@ fun Application.configureKoin(){
         factory { UserFridgeService(get()) }
         singleOf(::RecipeImagesRepositoryImpl) bind RecipeImageRepository::class
         factory { RecipeImagesService(get()) }
+        singleOf(::IngredientsRepositoryImpl) bind IngredientsRepository::class
+        factory { IngredientService(get()) }
     }
 
     install(Koin){

@@ -54,9 +54,8 @@ fun Route.userDietsRoutes() {
 
                 try {
                     val diet = dietsService.getDietsByDisplayName(dietId.displayName)
-                    if (diet != null) {
-                        val entry = userDietsService.addUserDietEntry(
-                            UserDietEntry(userId = userId, dietId = diet.id)
+                        userDietsService.addUserDietEntry(
+                            UserDietEntry(userId = userId, dietId = diet!!.id)
                         )
                         val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
                         val diets = mutableListOf<DietEntry?>()
@@ -65,9 +64,7 @@ fun Route.userDietsRoutes() {
                             diets.addAll(userDietsService.getDietsFromEntries(userDiets, dietsService))
                         }
                         call.respond(HttpStatusCode.Created, diets)
-                    }else{
-                        call.respond(HttpStatusCode.NotFound)
-                    }
+
 
                 } catch (e: Exception) {
                     val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
@@ -87,8 +84,8 @@ fun Route.userDietsRoutes() {
                 val dietId = call.receive<DietsIDRequest>()
 
                 val diet = dietsService.getDietsByDisplayName(dietId.displayName)
-                if (diet != null) {
-                    userDietsService.removeUserDietEntry(userId, diet.id)
+
+                    userDietsService.removeUserDietEntry(userId, diet!!.id)
                     val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
                     val diets = mutableListOf<DietEntry?>()
 
@@ -96,10 +93,7 @@ fun Route.userDietsRoutes() {
                         diets.addAll(userDietsService.getDietsFromEntries(userDiets, dietsService))
                     }
                     call.respond(HttpStatusCode.OK, diets)
-                }
-                else{
-                    call.respond(HttpStatusCode.NotFound)
-                }
+
             }
         }
     }
