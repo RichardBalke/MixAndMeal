@@ -21,7 +21,7 @@ class UserDietsService(private val userDietsRepository: UserDietsRepository) {
     suspend fun getDietsFromEntries(entries: List<UserDietEntry>, dietsService: DietsService): List<DietEntry> {
         val result = mutableListOf<DietEntry>()
         for (entry in entries) {
-            val diet = dietsService.getDietById(entry.dietId)
+            val diet: DietEntry? = dietsService.getDietById(entry.dietId)
             result.add(diet)
         }
         return result
