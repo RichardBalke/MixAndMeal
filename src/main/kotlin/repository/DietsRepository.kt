@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 interface DietsRepository : CrudRepository<DietEntry, Int> {
-    suspend fun findByDietId(dietId: Int) : DietEntry
+    suspend fun findByDietId(dietId: Int) : DietEntry?
     suspend fun findByDisplayName(displayName: String): DietEntry?
 }
 
@@ -26,11 +26,11 @@ class DietsRepositoryImpl() : DietsRepository, CrudImplementation<DietEntry, Int
         stmt[Diets.description] = diet.description
     }
 ) {
-    override suspend fun findByDietId(dietId: Int) : DietEntry = transaction {
+    override suspend fun findByDietId(dietId: Int) : DietEntry? = transaction {
         table.selectAll()
             .where(Diets.id eq dietId)
             .map(toEntity)
-            .single()
+            .singleOrNull()
     }
 
     override suspend fun findByDisplayName(displayName: String): DietEntry? = transaction {

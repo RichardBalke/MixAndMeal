@@ -18,8 +18,8 @@ class UserDietsService(private val userDietsRepository: UserDietsRepository) {
         userDietsRepository.removeDiet(userId, dietId)
     }
 
-    suspend fun getDietsFromEntries(entries: List<UserDietEntry>, dietsService: DietsService): List<DietEntry> {
-        val result = mutableListOf<DietEntry>()
+    suspend fun getDietsFromEntries(entries: List<UserDietEntry>, dietsService: DietsService): List<DietEntry?> {
+        val result = mutableListOf<DietEntry?>()
         for (entry in entries) {
             val diet = dietsService.getDietById(entry.dietId)
             result.add(diet)

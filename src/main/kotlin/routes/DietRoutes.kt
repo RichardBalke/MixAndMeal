@@ -14,7 +14,7 @@ fun Route.dietRoutes() {
     val userDietsService by inject<UserDietsService>()
     route("/getdiet") {
         get(){
-            val diet = dietsService.getDietById(1)
+            val diet = dietsService.getDietById(1) ?: return@get call.respond(HttpStatusCode.NotFound)
             call.respond(HttpStatusCode.OK, diet)
         }
         get("/user-1"){

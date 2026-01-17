@@ -36,7 +36,7 @@ fun Route.userDietsRoutes() {
                 val principal = call.principal<JWTPrincipal>()
                 val userId = principal?.getClaim("userId", String::class)!!
                 val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
-                val diets = mutableListOf<DietEntry>()
+                val diets = mutableListOf<DietEntry?>()
 
                 if (userDiets.isNotEmpty()) {
                     diets.addAll(userDietsService.getDietsFromEntries(userDiets, dietsService))
@@ -56,7 +56,7 @@ fun Route.userDietsRoutes() {
                         UserDietEntry(userId = userId, dietId = dietId.id)
                     )
                     val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
-                    val diets = mutableListOf<DietEntry>()
+                    val diets = mutableListOf<DietEntry?>()
 
                     if (userDiets.isNotEmpty()) {
                         diets.addAll(userDietsService.getDietsFromEntries(userDiets, dietsService))
@@ -65,7 +65,7 @@ fun Route.userDietsRoutes() {
 
                 } catch (e: Exception) {
                     val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
-                    val diets = mutableListOf<DietEntry>()
+                    val diets = mutableListOf<DietEntry?>()
 
                     if (userDiets.isNotEmpty()) {
                         diets.addAll(userDietsService.getDietsFromEntries(userDiets, dietsService))
@@ -82,7 +82,7 @@ fun Route.userDietsRoutes() {
 
                 userDietsService.removeUserDietEntry(userId, dietId.id)
                 val userDiets: List<UserDietEntry> = userDietsService.getUserDietEntries(userId)
-                val diets = mutableListOf<DietEntry>()
+                val diets = mutableListOf<DietEntry?>()
 
                 if (userDiets.isNotEmpty()) {
                     diets.addAll(userDietsService.getDietsFromEntries(userDiets, dietsService))
