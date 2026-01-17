@@ -101,9 +101,10 @@ Authorization: Bearer {{token}}
 
 ### search recipes
 POST http://127.0.0.1:8080/recipe/search
+Content-Type: application/json
 
 {
-    "partialTitle": "bla",
+    "partialTitle": "",
     "difficulty": "",
     "mealType": "",
     "kitchenStyle": "",
@@ -115,6 +116,14 @@ POST http://127.0.0.1:8080/recipe/search
 
 ###
 GET http://127.0.0.1:8080/recipes/featured/1
+
+###
+POST http://127.0.0.1:8080/delete-diet
+Content-Type: application/json
+
+{
+    "recipeId": 1
+}
 
 
 

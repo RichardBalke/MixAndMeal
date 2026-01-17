@@ -26,7 +26,6 @@ class RecipeService(
 
     suspend fun createUploadedRecipe(
         uploadedRecipe: RecipeUploadRequest,
-//        recipeImagesService: RecipeImagesService,
         recipeDietsService: RecipeDietsService,
         recipeAllergenService: RecipeAllergenService,
         ingredientUnitService: IngredientUnitService
@@ -45,11 +44,6 @@ class RecipeService(
                 0
             )
             val newRecipe = recipeRepository.create(recipe)  // Changed from addRecipes
-
-            // All service calls NOW work because they're inside transaction block
-//            uploadedRecipe.images.forEach { image ->
-//                recipeImagesService.addImage(newRecipe.id?.toInt() ?: 0 , image.imageUrl)
-//            }
 
             uploadedRecipe.diets.forEach { dietRequest ->
                 dietsRepository.findByDisplayName(dietRequest.displayName)?.let { diet ->

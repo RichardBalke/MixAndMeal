@@ -35,4 +35,10 @@ class RecipeAllergenService(val recipeAllergensRepository: RecipeAllergensReposi
     ){
         recipeAllergensRepository.create(recipeAllergen)
     }
+
+    suspend fun deleteAllRecipeAllergens(recipeId: Int) : Boolean {
+        recipeAllergensRepository.deleteDietsByRecipeId(recipeId)
+        val exists = recipeAllergensRepository.findAllByRecipeId(recipeId)
+        return exists.isEmpty()
+    }
 }

@@ -23,4 +23,10 @@ class RecipeDietsService(private val recipeDietsRepository: RecipeDietsRepositor
     ){
         recipeDietsRepository.create(recipeDiets)
     }
+
+    suspend fun deleteAllRecipeDiets(recipeId: Int) : Boolean {
+        recipeDietsRepository.deleteDietsByRecipeId(recipeId)
+        val exists = recipeDietsRepository.getDietsForRecipe(recipeId)
+        return exists.isEmpty()
+    }
 }

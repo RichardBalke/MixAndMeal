@@ -3,7 +3,10 @@ package api.repository
 import models.dto.IngredientUnitEntry
 import models.dto.RecipeImageEntry
 import models.tables.IngredientUnits
+import models.tables.RecipeImages
 import models.tables.Recipes
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import responses.RecipeSearchResult
@@ -11,6 +14,7 @@ import responses.RecipeSearchResult
 interface IngredientUnitRepository : CrudRepository<IngredientUnitEntry, IngredientUnitEntry> {
  suspend fun findRecipesByIngredient(ingredientName : String): List<RecipeSearchResult>
  suspend fun findAllByRecipeId(recipeId : Int): List<IngredientUnitEntry>
+ suspend fun deleteIngredientsByRecipeId(recipeId: Int): Int
 }
 
 class IngredientUnitRepositoryImpl() : IngredientUnitRepository,
@@ -63,5 +67,9 @@ class IngredientUnitRepositoryImpl() : IngredientUnitRepository,
             .where { IngredientUnits.recipeId eq recipeId }
             .map(toEntity)
             .toList()
+    }
+
+    override suspend fun deleteIngredientsByRecipeId(recipeId: Int): Int = transaction {
+        table.deleteWhere { IngredientUnits.recipeId eq recipeId }
     }
 }

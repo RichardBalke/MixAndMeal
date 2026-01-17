@@ -3,6 +3,7 @@ package service
 import api.service.ByteArraySourceFile
 import models.dto.RecipeImageEntry
 import net.schmizz.sshj.SSHClient
+import org.jetbrains.exposed.sql.transactions.transaction
 import repository.RecipeImageRepository
 
 class RecipeImagesService(private val recipeImageRepository: RecipeImageRepository) {
@@ -22,7 +23,7 @@ class RecipeImagesService(private val recipeImageRepository: RecipeImageReposito
     suspend fun uploadImage(recipeId:Int, fileName: String, bytes: ByteArray): RecipeImageEntry {
         val ssh = SSHClient().apply {
             connect("ssh.cyz59nsua.service.one")              // SFTP host = your domain
-            authPassword("", "")
+            authPassword("cyz59nsua_ssh", "Codecore123")
         }
 
         val source = ByteArraySourceFile(fileName, bytes)
@@ -38,5 +39,11 @@ class RecipeImagesService(private val recipeImageRepository: RecipeImageReposito
         val publicUrl = "https://yourdomain.com/uploads/$fileName"
 
         return addImage(recipeId , publicUrl)
+    }
+
+    suspend fun deleteAllRecipeImages(recipeId: Int) : Boolean {
+        recipeImageRepository.deleteImagesByRecipeId(recipeId)
+        val exists = recipeImageRepository.getImagesForRecipe(recipeId)
+        return exists.isEmpty()
     }
 }

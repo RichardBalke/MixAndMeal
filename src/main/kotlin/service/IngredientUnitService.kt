@@ -13,4 +13,10 @@ class IngredientUnitService(private val ingredientUnitRepository: IngredientUnit
     ){
         ingredientUnitRepository.create(ingredientUnit)
     }
+
+    suspend fun deleteAllRecipeIngredients(recipeId: Int) : Boolean {
+        ingredientUnitRepository.deleteIngredientsByRecipeId(recipeId)
+        val exists = ingredientUnitRepository.findAllByRecipeId(recipeId)
+        return exists.isEmpty()
+    }
 }

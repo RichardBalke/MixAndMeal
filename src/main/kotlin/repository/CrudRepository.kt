@@ -12,6 +12,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.upsert
 
 interface CrudRepository <T,ID> {
     suspend fun findById(id: ID): T?
@@ -63,7 +64,7 @@ abstract class CrudImplementation<T : Any, ID : Any>(
     }
 
     override suspend fun create(entity: T): T = transaction {
-        val inserted = table.insert {
+        val inserted = table.upsert {
             entityMapper(it, entity)
         }
         toEntity(inserted.resultedValues!!.first())

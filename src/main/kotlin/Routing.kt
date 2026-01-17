@@ -1,5 +1,6 @@
 package api
 
+import api.routes.deleteRecipe
 import api.routes.dietRoutes
 import api.routes.featuredRecipeDetails
 import api.routes.fullRecipe
@@ -9,7 +10,6 @@ import api.routes.quickRecipes
 import api.routes.recipeCardsByDifficulty
 import api.routes.recipeSearch
 import api.routes.userRoutes
-import api.routes.recipesRoutes
 import api.routes.uploadRecipe
 import api.routes.userFridgeRoutes
 import io.ktor.server.application.*
@@ -31,13 +31,13 @@ fun Application.configureRouting(
     routing {
         // Recipes
         featuredRecipeDetails()
-        recipesRoutes()
         fullRecipe()
         popularRecipes()
         recipeCardsByDifficulty()
         uploadRecipe()
         quickRecipes()
         recipeSearch()
+        deleteRecipe()
 
         // Users
         userRoutes()

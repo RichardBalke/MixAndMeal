@@ -14,6 +14,7 @@ interface RecipeImageRepository : CrudRepository<RecipeImageEntry, Int>  {
     suspend fun getImagesForRecipe(recipeId: Int): List<RecipeImageEntry>
     suspend fun addImage(recipeId: Int, imageUrl: String): RecipeImageEntry
     suspend fun deleteImage(imageId: Int)
+    suspend fun deleteImagesByRecipeId(recipeId: Int): Int
 }
 
 class RecipeImagesRepositoryImpl :
@@ -50,4 +51,9 @@ class RecipeImagesRepositoryImpl :
     override suspend fun deleteImage(imageId: Int) {
         delete(imageId)
     }
+
+    override suspend fun deleteImagesByRecipeId(recipeId: Int) = transaction {
+        table.deleteWhere { RecipeImages.recipeId eq recipeId }
+    }
+
 }
