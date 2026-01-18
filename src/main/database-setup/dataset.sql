@@ -66,20 +66,21 @@ insert into allergens (allergen_id, name, displayname, description) values
     (15, 'corn',         'Corn',          'Corn and derivatives.');
 
 insert into diets (diet_id, displayname, description) values
-    (1,  'Veganistisch',   'Geen dierlijke producten.'),
-    (2,  'Vegetarisch',    'Geen vlees of vis.'),
-    (3,  'Glutenvrij',     'Geen glutenbevattende granen.'),
-    (4,  'Lactosevrij',    'Geen lactose.'),
-    (5,  'Notenvrij',      'Geen noten of sporen.'),
-    (6,  'Zuivelvrij',     'Geen melkproducten.'),
-    (7,  'Suikerarm',      'Weinig toegevoegde suikers.'),
-    (8,  'Zoutarm',        'Weinig natrium.'),
-    (9,  'Halal',          'Voldoet aan islamitische voorschriften.'),
-    (10, 'Kosher',         'Voldoet aan joodse voorschriften.'),
-    (11, 'Paleo',          'Geen granen, zuivel of bewerkt voedsel.'),
-    (12, 'Keto',           'Laag in koolhydraten, hoog in vetten.'),
-    (13, 'Raw food',       'Rauw of minimaal verhit.'),
-    (14, 'Flexitarisch',   'Overwegend vegetarisch.');
+(1,  'Vegan',          'No animal products.'),
+(2,  'Vegetarian',     'No meat or fish.'),
+(3,  'Gluten free',    'No gluten-containing grains.'),
+(4,  'Lactose free',   'No lactose.'),
+(5,  'Nut free',       'No nuts or traces of nuts.'),
+(6,  'Dairy free',     'No dairy products.'),
+(7,  'Low sugar',      'Low in added sugars.'),
+(8,  'Low sodium',     'Low in sodium.'),
+(9,  'Halal',          'Meets Islamic dietary requirements.'),
+(10, 'Kosher',         'Meets Jewish dietary requirements.'),
+(11, 'Paleo',          'No grains, dairy, or processed foods.'),
+(12, 'Keto',           'Low in carbohydrates, high in fats.'),
+(13, 'Raw food',       'Raw or minimally heated foods.'),
+(14, 'Flexitarian',    'Mostly vegetarian.');
+
 
 insert into user_fridge (user_id, ingredient_name) values
     ('alice@example.com', 'Tomato'),
