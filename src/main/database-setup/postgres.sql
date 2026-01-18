@@ -1,3 +1,17 @@
+drop table ingredient_units;
+drop table recipe_diets;
+drop table recipe_images;
+drop table recipe_allergens;
+drop table user_diets;
+drop table user_fridge;
+drop table user_allergens;
+drop table user_favourites;
+drop table ingredients;
+drop table allergens;
+drop table diets;
+drop table recipes;
+drop table users;
+
 create table users
 (
     name     varchar,

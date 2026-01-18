@@ -145,7 +145,7 @@ fun Route.quickRecipes(){
 fun Route.recipeSearch(){
     val recipeService by inject<RecipeService>()
     route("/search-recipes"){
-        get(){
+        post(){
             val request = call.receive<RecipeSearchRequest>()
             val recipes = recipeService.searchRecipes(request)
             if(recipes.isNotEmpty()){
@@ -215,21 +215,14 @@ fun Route.uploadRecipe() {
 //            }
 //        }
 //    }
-    route("/update-recipe") {
-        post {
-            val multipart = call.receiveMultipart()
-            var recipeJson: String? = null
-            val imageFiles = mutableListOf<Pair<String, ByteArray>>() // (filename, bytes)
 
+    route("/update-image/{recipeId}"){
+        post(){
+            val id: Int = call.parameters["recipeId"]?.toIntOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest)
+            val multipart = call.receiveMultipart()
+            val imageFiles = mutableListOf<Pair<String, ByteArray>>()
             multipart.forEachPart { part ->
                 when (part) {
-
-                    is PartData.FormItem -> {
-                        if (part.name == "recipe") {
-                            recipeJson = part.value
-                        }
-                    }
-
                     is PartData.FileItem -> {
                         val fileName = part.originalFileName ?: "image_${System.currentTimeMillis()}.jpg"
                         val bytes = part.streamProvider().readBytes()
@@ -240,17 +233,24 @@ fun Route.uploadRecipe() {
                 }
                 part.dispose()
             }
-
-            if (recipeJson == null) {
-                call.respond(HttpStatusCode.BadRequest, "Missing recipe JSON")
-                return@post
+            for (uploadedImage in imageFiles) {
+                if (uploadedImage.toList().isEmpty()) {
+                    call.respond(HttpStatusCode.BadRequest, "No file uploaded")
+                    return@post
+                } else {
+                    recipeImagesService.uploadImage(id, uploadedImage.first, uploadedImage.second)
+                }
             }
 
-            val newRecipe = Json.decodeFromString<RecipeUploadRequest>(recipeJson!!)
+        }
+    }
+
+    route("/update-recipe") {
+        post {
+            val newRecipe = call.receive<RecipeUploadRequest>()
             var id : Int
             if(newRecipe.recipeId != null){
                 id = newRecipe.recipeId
-
             }
             else {
                 id = recipeService.createUploadedRecipe(
@@ -259,14 +259,6 @@ fun Route.uploadRecipe() {
                     recipeAllergenService,
                     ingredientUnitService
                 )
-            }
-            for (uploadedImage in imageFiles) {
-                if (uploadedImage.toList().isEmpty()) {
-                    call.respond(HttpStatusCode.BadRequest, "No file uploaded")
-                    return@post
-                } else {
-                    recipeImagesService.uploadImage(id, uploadedImage.first, uploadedImage.second)
-                }
             }
 
             call.respond(HttpStatusCode.Created, RecipeResponse(id))
