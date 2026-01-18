@@ -20,6 +20,7 @@ class UserFridgeServiceTest {
         fridgeService = UserFridgeService(fridgeRepository)
     }
 
+    // UFS-01
     @Test
     fun `getUserFridgeEntries returns list of entries`() = runBlocking {
         val entries = listOf(
@@ -35,6 +36,7 @@ class UserFridgeServiceTest {
         coVerify { fridgeRepository.getFridgeForUser("1") }
     }
 
+    // UFS-02
     @Test
     fun `addUserFridgeEntry returns added entry`() = runBlocking {
         val entry = UserFridgeEntry(userId = "1", ingredientName = "Carrot")
@@ -46,6 +48,7 @@ class UserFridgeServiceTest {
         coVerify { fridgeRepository.addIngredient("1", "Carrot") }
     }
 
+    // UFS-03
     @Test
     fun `removeUserFridgeEntry calls repository`() = runBlocking {
         coEvery { fridgeRepository.removeIngredient("1", "Lettuce") } just Runs

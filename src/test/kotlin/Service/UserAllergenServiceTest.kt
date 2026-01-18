@@ -20,6 +20,7 @@ class UserAllergenServiceTest {
         allergensService = UserAllergensService(allergensRepository)
     }
 
+    // UAS-01
     @Test
     fun `getUserAllergenEntries returns list of entries`() = runBlocking {
         val entries = listOf(
@@ -35,6 +36,7 @@ class UserAllergenServiceTest {
         coVerify { allergensRepository.getAllergensForUser("1") }
     }
 
+    // UAS-02
     @Test
     fun `addUserAllergenEntry returns added entry`() = runBlocking {
         val entry = UserAllergenEntry(userId = "1", allergenId = 103)
@@ -46,6 +48,7 @@ class UserAllergenServiceTest {
         coVerify { allergensRepository.addAllergen("1", 103) }
     }
 
+    // UAS-03
     @Test
     fun `removeUserAllergenEntry calls repository`() = runBlocking {
         coEvery { allergensRepository.removeAllergen("1", 101) } just Runs
@@ -55,6 +58,7 @@ class UserAllergenServiceTest {
         coVerify { allergensRepository.removeAllergen("1", 101) }
     }
 
+    // UAS-04
     @Test
     fun `checkAllergenExists returns true when allergen exists`() = runBlocking {
         val entries = listOf(UserAllergenEntry("1", 101))
@@ -66,6 +70,7 @@ class UserAllergenServiceTest {
         coVerify { allergensRepository.getAllergensForUser("1") }
     }
 
+    // UAS-05
     @Test
     fun `checkAllergenExists returns false when allergen does not exist`() = runBlocking {
         val entries = listOf(UserAllergenEntry("1", 102))

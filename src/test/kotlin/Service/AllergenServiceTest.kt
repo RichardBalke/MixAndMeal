@@ -20,6 +20,7 @@ class AllergenServiceTest {
         allergenService = AllergenService(allergenRepository)
     }
 
+    // AS-01
     @Test
     fun `getAllergenById returns allergen when exists`() = runBlocking {
         val allergen = AllergenEntry(
@@ -36,6 +37,7 @@ class AllergenServiceTest {
         coVerify { allergenRepository.findById(1) }
     }
 
+    // AS-02
     @Test
     fun `getAllergenById returns null when not found`() = runBlocking {
         coEvery { allergenRepository.findById(99) } returns null

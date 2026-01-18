@@ -20,6 +20,7 @@ class DietsServiceTest {
         dietsService = DietsService(dietsRepository)
     }
 
+    // DS-01
     @Test
     fun `getDietById returns diet`() = runBlocking {
         val diet = DietEntry(1, "Keto", "High fat, low carb")

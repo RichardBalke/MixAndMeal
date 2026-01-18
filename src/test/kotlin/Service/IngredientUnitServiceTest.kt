@@ -20,26 +20,7 @@ class IngredientUnitServiceTest {
         ingredientService = IngredientUnitService(ingredientRepo)
     }
 
-//    @Test
-//    fun `getIngredientsByRecipeId returns list`() = runBlocking {
-//        val ingredients = listOf(
-//            IngredientUnitEntry(1,
-//                "Tomato",
-//                100.0,
-//                "gr"),
-//            IngredientUnitEntry(1,
-//                "Potato",
-//                100.0,
-//                "gr"
-//        )
-//        coEvery { ingredientRepo.findAllByRecipeId(1) } returns ingredients
-//
-//        val result = ingredientService.getIngredientsByRecipeId(1)
-//
-//        assertEquals(2, result.size)
-//        coVerify { ingredientRepo.findAllByRecipeId(1) }
-//    }
-
+    // IUS-01
     @Test
     fun `addIngredientUnit calls repository`() = runBlocking {
         val ingredient = IngredientUnitEntry(1,

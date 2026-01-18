@@ -20,6 +20,7 @@ class UserFavouritesServiceTest {
         favouritesService = UserFavouritesService(favouritesRepository)
     }
 
+    // USF-01
     @Test
     fun `getUserFavouritesEntries returns list of entries`() = runBlocking {
         val entries = listOf(
@@ -35,6 +36,7 @@ class UserFavouritesServiceTest {
         coVerify { favouritesRepository.getFavouritesForUser("1") }
     }
 
+    // USF-02
     @Test
     fun `addUserFavouritesEntry returns added entry`() = runBlocking {
         val entry = UserFavouritesEntry(userId = "1", recipeId = 103)
@@ -46,6 +48,7 @@ class UserFavouritesServiceTest {
         coVerify { favouritesRepository.addFavourite("1", 103) }
     }
 
+    // USF-03
     @Test
     fun `removeUserFavouritesEntry calls repository`() = runBlocking {
         coEvery { favouritesRepository.removeFavourite("1", 101) } just Runs
@@ -55,6 +58,7 @@ class UserFavouritesServiceTest {
         coVerify { favouritesRepository.removeFavourite("1", 101) }
     }
 
+    // USF-04
     @Test
     fun `checkFavouriteExists returns true when favourite does not exist`() = runBlocking {
         coEvery { favouritesRepository.checkFavouriteExists("1", 104) } returns emptyList()
@@ -65,6 +69,7 @@ class UserFavouritesServiceTest {
         coVerify { favouritesRepository.checkFavouriteExists("1", 104) }
     }
 
+    // USF-05
     @Test
     fun `checkFavouriteExists returns false when favourite exists`() = runBlocking {
         coEvery { favouritesRepository.checkFavouriteExists("1", 105) } returns listOf(UserFavouritesEntry("1", 105))

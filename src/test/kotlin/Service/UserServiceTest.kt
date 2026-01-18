@@ -21,6 +21,7 @@ class UserServiceTest {
         userService = UserService(userRepository)
     }
 
+    // USF-01
     @Test
     fun `getByEmail returns user when exists`() = runBlocking {
         val user = UserEntry(
@@ -37,6 +38,7 @@ class UserServiceTest {
         coVerify { userRepository.findByEmail("test@test.com") }
     }
 
+    // USF-02
     @Test
     fun `getByEmail returns null when user does not exist`() = runBlocking {
         coEvery { userRepository.findByEmail("notfound@test.com") } returns null
@@ -47,6 +49,7 @@ class UserServiceTest {
         coVerify { userRepository.findByEmail("notfound@test.com") }
     }
 
+    // USF-03
     @Test
     fun `create calls repository and returns created user`() = runBlocking {
         val newUser = UserEntry(

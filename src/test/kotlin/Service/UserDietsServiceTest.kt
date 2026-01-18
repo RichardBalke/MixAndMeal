@@ -22,6 +22,7 @@ class UserDietsServiceTest {
         dietsService = UserDietsService(dietsRepository)
     }
 
+    // USD-01
     @Test
     fun `getUserDietEntries returns list of entries`() = runBlocking {
         val entries = listOf(
@@ -37,6 +38,7 @@ class UserDietsServiceTest {
         coVerify { dietsRepository.getDietsForUser("1") }
     }
 
+    // USD-02
     @Test
     fun `addUserDietEntry returns added entry`() = runBlocking {
         val entry = UserDietEntry(userId = "1", dietId = 103)
@@ -48,6 +50,7 @@ class UserDietsServiceTest {
         coVerify { dietsRepository.addDiet("1", 103) }
     }
 
+    // USD-03
     @Test
     fun `removeUserDietEntry calls repository`() = runBlocking {
         coEvery { dietsRepository.removeDiet("1", 101) } just Runs
@@ -57,6 +60,7 @@ class UserDietsServiceTest {
         coVerify { dietsRepository.removeDiet("1", 101) }
     }
 
+    // USD-04
     @Test
     fun `getDietsFromEntries returns list of DietEntry`() = runBlocking {
         val entries = listOf(

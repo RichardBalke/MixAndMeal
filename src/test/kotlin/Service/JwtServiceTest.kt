@@ -18,6 +18,7 @@ class JwtServiceTest {
         secret = "super-secret"
     )
 
+    // JWTS-01
     @Test
     fun `generate returns a valid JWT token`() {
         val token = jwtService.generate(
@@ -29,6 +30,7 @@ class JwtServiceTest {
         assertTrue(token.isNotBlank())
     }
 
+    // JWTS-02
     @Test
     fun `generated token contains userId claim`() {
         val token = jwtService.generate(
@@ -45,6 +47,7 @@ class JwtServiceTest {
         assertEquals("123", decoded.getClaim("userId").asString())
     }
 
+    // JWTS-03
     @Test
     fun `generated token has expiration date`() {
         val token = jwtService.generate(
@@ -56,6 +59,7 @@ class JwtServiceTest {
         assertNotNull(decoded.expiresAt)
     }
 
+    // JWTS-04
     @Test
     fun `token verification fails with wrong secret`() {
         val token = jwtService.generate(
