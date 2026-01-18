@@ -1,10 +1,13 @@
 package service
 
 import api.service.ByteArraySourceFile
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import models.dto.RecipeImageEntry
-import net.schmizz.sshj.SSHClient
-import org.jetbrains.exposed.sql.transactions.transaction
 import repository.RecipeImageRepository
+import java.io.FileOutputStream
+import java.io.File
 
 class RecipeImagesService(private val recipeImageRepository: RecipeImageRepository) {
 
@@ -21,24 +24,21 @@ class RecipeImagesService(private val recipeImageRepository: RecipeImageReposito
     }
 
     suspend fun uploadImage(recipeId:Int, fileName: String, bytes: ByteArray): RecipeImageEntry {
-        val ssh = SSHClient().apply {
-            connect("ssh.cyz59nsua.service.one")              // SFTP host = your domain
-            authPassword("cyz59nsua_ssh", "Codecore123")
+
+        val uploadDir = File("uploads/recipe_images/$recipeId")
+        uploadDir.mkdirs()
+        val imageFile = File(uploadDir, fileName)
+
+        // Schrijf bytes naar disk (runBlocking of coroutine scope)
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                FileOutputStream(imageFile).use { fos ->
+                    fos.write(bytes)
+                }
+            }
         }
-
-        val source = ByteArraySourceFile(fileName, bytes)
-
-        val sftp = ssh.newSFTPClient()
-        try {
-            val remotePath = "/webroots/18c388e7/mix-and-meal/$fileName"
-            sftp.put(source, remotePath)
-        } finally {
-            sftp.close()
-        }
-        ssh.disconnect()
-        val publicUrl = "https://yourdomain.com/uploads/$fileName"
-
-        return addImage(recipeId , publicUrl)
+        val publicUrl = "/images/$recipeId/$fileName"
+        return addImage(recipeId,publicUrl)
     }
 
     suspend fun deleteAllRecipeImages(recipeId: Int) : Boolean {

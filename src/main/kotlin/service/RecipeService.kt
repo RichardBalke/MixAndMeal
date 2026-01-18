@@ -43,7 +43,8 @@ class RecipeService(
                 uploadedRecipe.kitchenStyle,
                 0
             )
-            val newRecipe = recipeRepository.create(recipe)  // Changed from addRecipes
+            val newRecipe = recipeRepository.create(recipe)
+
 
             uploadedRecipe.diets.forEach { dietRequest ->
                 dietsRepository.findByDisplayName(dietRequest.displayName)?.let { diet ->
@@ -67,7 +68,11 @@ class RecipeService(
     }
 
     suspend fun searchRecipes(recipeSearchRequest: RecipeSearchRequest) : List<RecipeCardResponse> {
-        return recipeRepository.searchRecipes(recipeSearchRequest).toList()
+        return if(recipeRepository.searchRecipes(recipeSearchRequest).isNotEmpty()) {
+            recipeRepository.searchRecipes(recipeSearchRequest).toList()
+        }else{
+            emptyList()
+        }
     }
 
     suspend fun getRecipe(id: Int): RecipeEntry? {

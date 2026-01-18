@@ -7,12 +7,12 @@ GET http://127.0.0.1:8080/fullrecipe/1
 GET http://127.0.0.1:8080/quick-recipes/5
 
 ###
-GET http://localhost:8080/search-recipes
+POST http://localhost:8080/search-recipes
 Content-Type: application/json
 
 {
-  "partialTitle": null,
-  "difficulty": "easy",
+  "partialTitle": "Spaghetti",
+  "difficulty": null,
   "mealType": null,
   "kitchenStyle": null,
   "maxCookingTime": null,
